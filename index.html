@@ -1,0 +1,1676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Who carries more weight?</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --color-navy-dark: #141F52;
+      --color-navy-header: #475ED1;
+      --color-primary-blue: #2E45B8;
+      --color-teal: #1DC9A4;
+      --color-correct-bg: #c5dbba;
+      --color-incorrect-bg: #e8b2af;
+      --color-correct-text: #204e17;
+      --color-incorrect-text: #731e1a;
+      --color-bg-light: #EBEDFA;
+      --color-text-dark: #111111;
+      --font-main: 'Noto Sans', sans-serif;
+      --ink: #0E0C0C;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html { overflow-x: hidden; overflow-y: auto; }
+
+    body {
+      font-family: var(--font-main);
+      background-color: #ffffff;
+      display: block;
+      margin: 8px;
+      padding: 0;
+    }
+
+    /* CONTAINER */
+    .interactive-container {
+      width: 100%;
+      max-width: 1120px;
+      margin: 0 auto;
+      aspect-ratio: 16 / 9;
+      background: #ffffff;
+      border-radius: 0;
+      box-shadow: 0 4px 8px 0 rgba(13, 13, 13, 0.15), 0 0 6px 0 rgba(13, 13, 13, 0.10);
+      position: relative;
+      overflow: hidden;
+      transform: translateZ(0);
+      container-type: inline-size;
+    }
+
+    /* ========================================================= */
+    /* 1. COVER SLIDE                                            */
+    /* ========================================================= */
+    .view-cover {
+      position: absolute;
+      inset: 0;
+      background: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 4rem 6rem;
+      z-index: 500;
+      transition: opacity 0.4s ease, visibility 0.4s ease;
+    }
+
+    .view-cover.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .cover-content {
+      max-width: max-content;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      z-index: 2;
+    }
+
+    .brand-badge {
+      display: inline-block;
+      background-color: #E3120B;
+      color: #ffffff;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 6px 10px;
+      line-height: 1.25;
+      width: fit-content;
+    }
+
+    .cover-title {
+      font-size: 48px;
+      font-weight: 700;
+      color: #000000;
+      line-height: 1.25;
+      white-space: nowrap;
+      opacity: 0;
+      transform: translateY(24px);
+      animation: slideUpFade 1.4s cubic-bezier(0.25, 1, 0.4, 1) forwards;
+      animation-delay: 0.15s;
+    }
+
+    .btn-start {
+      align-self: flex-start;
+      width: 152px;
+      height: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #2E45B8;
+      color: #ffffff;
+      border: none;
+      padding: 0;
+      font-size: 1rem;
+      font-family: var(--font-main);
+      font-weight: 700;
+      border-radius: 4px;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(46, 69, 184, 0.25);
+      transition: background-color 0.2s ease, transform 0.15s ease;
+      opacity: 0;
+      animation: fadeIn 0.8s ease-out forwards;
+      animation-delay: 0.8s;
+    }
+
+    .btn-start:hover {
+      background-color: #141F52;
+      transform: translateY(-1px);
+    }
+
+    .btn-start:focus-visible {
+      outline: 3px solid var(--color-teal);
+      outline-offset: 2px;
+    }
+
+    .cover-illustration {
+      width: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .cover-illustration svg {
+      width: 100%;
+      max-width: 440px;
+      height: auto;
+      display: block;
+    }
+
+    @keyframes slideUpFade {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    /* ========================================================= */
+    /* 2. HEADER & STAGE                                         */
+    /* ========================================================= */
+    .app-header {
+      position: relative;
+      z-index: 10;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.8rem 1.75rem;
+      background: #ffffff;
+      border-bottom: 1px solid #e0e0e0;
+      height: 10%;
+    }
+
+    .brand-section {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .sub-title {
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: #333333;
+    }
+
+    .header-buttons {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .icon-btn {
+      --ring: #475ED1;
+      --ring-fill: transparent;
+      --glyph: #475ED1;
+      width: 36px;
+      height: 36px;
+      padding: 0;
+      border: 0;
+      background: none;
+      cursor: pointer;
+      flex: none;
+      display: block;
+      border-radius: 50%;
+      position: relative;
+    }
+
+    .icon-btn svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+      overflow: visible;
+    }
+
+    .icon-btn .ring {
+      fill: var(--ring-fill);
+      stroke: var(--ring);
+      stroke-width: 1;
+    }
+
+    .icon-btn .glyph {
+      fill: var(--glyph);
+    }
+
+    .icon-btn .xglyph {
+      fill: none;
+      stroke: var(--glyph);
+      stroke-width: 2;
+      stroke-linecap: butt;
+    }
+
+    .icon-btn:hover,
+    .icon-btn:focus-visible {
+      --ring: #1f2e7a;
+      --ring-fill: #ebedfa;
+      --glyph: #1f2e7a;
+      outline: none;
+    }
+
+    .icon-btn:active {
+      --ring: #1dc9a4;
+      --ring-fill: transparent;
+      --glyph: #1f2e7a;
+    }
+
+    /* MAIN STAGE SPLIT LAYOUT */
+    .stage-view {
+      position: relative;
+      width: 100%;
+      height: 90%;
+      background-color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.5rem 3rem 1.75rem 3.5rem;
+      gap: 1rem;
+    }
+
+    /* LEFT: SELECTION BOARD */
+    .selection-board {
+      width: 50%;
+      max-width: 500px;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      z-index: 2;
+    }
+
+    .selection-grid-row-top {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.75rem;
+    }
+
+    .selection-grid-row-bottom {
+      display: flex;
+      justify-content: center;
+      gap: 2.5rem;
+    }
+
+    .cat-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      width: 124px;
+    }
+
+    .cat-badge {
+      width: 66px;
+      height: 66px;
+      border-radius: 50%;
+      background-color: #f2f2ef;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 0.45rem;
+      transition: transform 0.25s ease;
+      cursor: pointer;
+    }
+
+    .cat-badge svg {
+      width: 44px;
+      height: 44px;
+    }
+
+    .cat-title {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #111111;
+      line-height: 1.2;
+      min-height: 2.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 0.4rem;
+    }
+
+    .cat-radios {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      width: 100%;
+    }
+
+    .radio-pill {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.78rem;
+      color: #111111;
+      font-weight: 500;
+      cursor: pointer;
+      padding: 2px 6px;
+      border-radius: 3px;
+      border: 1px solid transparent;
+      user-select: none;
+      transition: background-color 0.2s ease, border-color 0.2s ease;
+    }
+
+    .radio-circle {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      border: 1.5px solid #222222;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      background: #ffffff;
+      transition: all 0.2s ease;
+    }
+
+    .radio-circle-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #222222;
+      opacity: 0;
+      transition: opacity 0.15s ease;
+    }
+
+    /* Hover on unselected */
+    .radio-pill:not(.locked):hover .radio-circle {
+      border-color: var(--color-primary-blue);
+    }
+
+    /* Evaluated States */
+    .radio-pill.correct {
+      background-color: var(--color-correct-bg);
+      border-color: #8da480;
+      font-weight: 700;
+      color: var(--color-correct-text);
+    }
+    .radio-pill.correct .radio-circle {
+      border-color: #2b571e;
+    }
+    .radio-pill.correct .radio-circle-dot {
+      opacity: 1;
+      background-color: #2b571e;
+    }
+
+    .radio-pill.incorrect {
+      background-color: var(--color-incorrect-bg);
+      border-color: #bf807b;
+      font-weight: 700;
+      color: var(--color-incorrect-text);
+    }
+    .radio-pill.incorrect .radio-circle {
+      border-color: #731e1a;
+    }
+    .radio-pill.incorrect .radio-circle-dot {
+      opacity: 1;
+      background-color: #731e1a;
+    }
+
+    .radio-pill.locked {
+      cursor: default;
+      pointer-events: none;
+    }
+
+    /* RIGHT: SCALE STAGE */
+    .scale-stage-wrapper {
+      width: 50%;
+      height: 100%;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .scale-graphic-svg {
+      width: 100%;
+      max-width: 520px;
+      height: auto;
+      overflow: visible;
+    }
+
+    /* Beam and pan rotation */
+    .scale-beam-group {
+      transform-origin: 300px 186px;
+      transition: transform 0.85s cubic-bezier(0.34, 1.3, 0.64, 1);
+    }
+
+    .pan-hanging-usa,
+    .pan-hanging-china {
+      transition: transform 0.85s cubic-bezier(0.34, 1.3, 0.64, 1);
+    }
+
+    .pan-hanging-usa {
+      transform-origin: 95px 186px;
+    }
+
+    .pan-hanging-china {
+      transform-origin: 505px 186px;
+    }
+
+    /* Pan payload icons */
+    .pan-tray-icon {
+      opacity: 0;
+      transform-origin: center bottom;
+      transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .pan-tray-icon.active {
+      opacity: 1;
+    }
+
+    /* ========================================================= */
+    /* 3. MODALS & POP-UPS                                       */
+    /* ========================================================= */
+    .dark-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(20, 31, 82, 0.94);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 300;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+
+    .dark-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .center-modal {
+      background: #ffffff;
+      border-radius: 0;
+      padding: 2.75rem 3.25rem 2.25rem;
+      text-align: center;
+      width: 90%;
+      max-width: 820px;
+      box-shadow: 0 12px 32px rgba(0,0,0,0.4);
+      position: relative;
+    }
+
+    .center-modal h2 {
+      font-size: 1.05rem;
+      color: #222222;
+      margin-bottom: 1.75rem;
+      font-weight: 400;
+      line-height: 1.65;
+    }
+
+    .action-btn {
+      background: #2E45B8;
+      color: #ffffff;
+      border: none;
+      padding: 0.65rem 2.75rem;
+      border-radius: 4px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: var(--font-main);
+      box-shadow: 0 2px 6px rgba(46, 69, 184, 0.25);
+      transition: background-color 0.2s ease, transform 0.15s ease;
+    }
+
+    .action-btn:hover {
+      background: #141F52;
+      transform: translateY(-1px);
+    }
+
+    .action-btn:focus-visible {
+      outline: 3px solid var(--color-teal);
+      outline-offset: 2px;
+    }
+
+    /* CATEGORY EXPLANATION MODAL */
+    .dialog-card {
+      background: #ffffff;
+      border-radius: 0;
+      width: 90%;
+      max-width: 780px;
+      padding: 2.25rem 3rem 2.25rem;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+      position: relative;
+      text-align: left;
+    }
+
+    .dialog-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #eaeaea;
+      padding-bottom: 0.85rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .dialog-header-left {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .flag-emblem {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 2px solid #eaeaea;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+      flex-shrink: 0;
+    }
+
+    .dialog-card h2 {
+      font-size: 1.5rem;
+      color: var(--color-text-dark);
+      font-weight: 700;
+    }
+
+    .dialog-card p {
+      font-size: 0.95rem;
+      color: #222222;
+      line-height: 1.65;
+    }
+
+    .close-card-btn {
+      position: absolute;
+      top: 1.25rem;
+      right: 1.25rem;
+      cursor: pointer;
+      z-index: 10;
+    }
+
+    /* COMPLETION CARD */
+    .completion-card {
+      max-width: 580px;
+      padding: 2.5rem 3rem 2.25rem;
+      text-align: center;
+    }
+
+    .completion-buttons {
+      display: flex;
+      gap: 1.25rem;
+      justify-content: center;
+      margin-top: 1.75rem;
+    }
+
+    .btn-outline {
+      background: #ffffff !important;
+      color: var(--color-primary-blue) !important;
+      border: 1.5px solid var(--color-primary-blue) !important;
+    }
+
+    .btn-outline:hover {
+      background: var(--color-bg-light) !important;
+      color: var(--color-navy-dark) !important;
+    }
+
+    /* BIBLIOGRAPHY MODAL */
+    .biblio-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(20, 31, 82, 0.95);
+      z-index: 400;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .biblio-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .biblio-card {
+      background: #ffffff;
+      border-radius: 0;
+      width: 82%;
+      max-height: 82%;
+      padding: 2rem 2.75rem;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+
+    .bib-head {
+      border-bottom: 1px solid #eaeaea;
+      margin-bottom: 1rem;
+      padding-bottom: 0.75rem;
+    }
+
+    .bib-head h2 {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    .bib-body {
+      padding: 0.5rem 0.5rem 1rem 0;
+      overflow-y: auto;
+      font-size: 14.5px;
+      line-height: 1.68;
+      color: var(--ink);
+    }
+
+    .bib-entry {
+      margin: 0 0 14px;
+      padding: 0 0 0 24px;
+      text-indent: -24px;
+      overflow-wrap: break-word;
+    }
+
+    /* ========================================================= */
+    /* CONTAINER QUERY SCALING LAYER                             */
+    /* ========================================================= */
+    @property --u {
+      syntax: '<length>';
+      inherits: true;
+      initial-value: 1px;
+    }
+    .interactive-container > * { --u: 0.089286cqw; }
+
+    .app-header { padding: calc(11 * var(--u)) calc(28 * var(--u)); }
+    .sub-title { font-size: calc(16.5 * var(--u)); }
+    .header-buttons { gap: calc(8 * var(--u)); }
+    .icon-btn { width: calc(36 * var(--u)); height: calc(36 * var(--u)); }
+
+    .view-cover { padding: calc(56 * var(--u)) calc(80 * var(--u)); }
+    .cover-title { font-size: calc(46 * var(--u)); }
+    .btn-start { width: calc(152 * var(--u)); height: calc(44 * var(--u)); font-size: calc(16 * var(--u)); }
+
+    .cat-item { width: calc(118 * var(--u)); }
+    .cat-badge { width: calc(64 * var(--u)); height: calc(64 * var(--u)); }
+    .cat-badge svg { width: calc(42 * var(--u)); height: calc(42 * var(--u)); }
+    .cat-title { font-size: calc(11.5 * var(--u)); }
+    .radio-pill { font-size: calc(12 * var(--u)); padding: calc(2 * var(--u)) calc(6 * var(--u)); }
+    .radio-circle { width: calc(14 * var(--u)); height: calc(14 * var(--u)); }
+
+    .dialog-card { padding: calc(28 * var(--u)) calc(40 * var(--u)); }
+    .dialog-card h2 { font-size: calc(22 * var(--u)); }
+    .dialog-card p { font-size: calc(14.5 * var(--u)); line-height: 1.65; }
+
+    .biblio-card { padding: calc(28 * var(--u)) calc(40 * var(--u)); }
+    .bib-head h2 { font-size: calc(22 * var(--u)); }
+    .bib-body { font-size: calc(14.5 * var(--u)); }
+
+    /* ========================================================= */
+    /* 4. MOBILE VIEW (<=600px)                                  */
+    /* ========================================================= */
+    .mobile-app { display: none; }
+
+    @media (max-width: 600px) {
+      .interactive-container { display: none; }
+      body { margin: 0; }
+
+      .mobile-app {
+        display: block;
+        position: relative;
+        width: 100%;
+        min-height: 520px;
+        background: #ffffff;
+        color: var(--color-text-dark);
+        font-family: var(--font-main);
+        padding-bottom: 28px;
+        overflow: hidden;
+      }
+
+      .mobile-app [hidden] { display: none !important; }
+
+      .m-cover {
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        gap: 20px;
+        padding: 40px 24px;
+        min-height: 480px;
+      }
+      .mobile-app[data-view="cover"] .m-cover { display: flex; }
+
+      .m-cover-scale { width: 75%; max-width: 260px; height: auto; }
+      .m-cover-title { font-size: 28px; font-weight: 700; line-height: 1.25; color: #000; }
+
+      .m-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 44px;
+        min-width: 152px;
+        padding: 0 28px;
+        background: var(--color-primary-blue);
+        color: #fff;
+        border: 1.5px solid var(--color-primary-blue);
+        border-radius: 4px;
+        font-family: var(--font-main);
+        font-size: 16px;
+        font-weight: 700;
+        cursor: pointer;
+      }
+      .m-btn:active { background: var(--color-navy-dark); }
+
+      .m-header { display: none; padding: 14px 18px 0; }
+      .mobile-app:not([data-view="cover"]) .m-header { display: block; }
+      .m-header-buttons { display: flex; justify-content: space-between; align-items: center; }
+      .m-subtitle { margin-top: 10px; font-size: 14px; font-weight: 500; color: #333; }
+      .m-rule { border: 0; border-top: 1px solid #e0e0e0; margin: 10px 0 0; }
+
+      .m-main-view { display: none; padding: 16px 18px; }
+      .mobile-app[data-view="main"] .m-main-view { display: block; }
+
+      .m-scale-banner {
+        width: 100%;
+        max-width: 320px;
+        margin: 0 auto 16px;
+        display: block;
+      }
+
+      .m-category-card {
+        background: #f9f9f9;
+        border: 1px solid #e5e5e5;
+        border-radius: 6px;
+        padding: 12px 14px;
+        margin-bottom: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .m-cat-left {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .m-cat-badge {
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        background: #ebedfa;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+      .m-cat-badge svg { width: 28px; height: 28px; }
+
+      .m-cat-name {
+        font-size: 14px;
+        font-weight: 700;
+        color: #111;
+        max-width: 120px;
+        line-height: 1.25;
+      }
+
+      .m-cat-options {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+
+      .m-radio-pill {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 13px;
+        font-weight: 500;
+        padding: 4px 8px;
+        border-radius: 4px;
+        border: 1px solid #ccc;
+        background: #fff;
+        cursor: pointer;
+      }
+
+      .m-radio-pill.correct {
+        background-color: var(--color-correct-bg);
+        border-color: #8da480;
+        color: var(--color-correct-text);
+        font-weight: 700;
+      }
+      .m-radio-pill.incorrect {
+        background-color: var(--color-incorrect-bg);
+        border-color: #bf807b;
+        color: var(--color-incorrect-text);
+        font-weight: 700;
+      }
+
+      .m-biblio-view { display: none; padding: 16px 20px; }
+      .mobile-app[data-view="biblio"] .m-biblio-view { display: block; }
+      .m-biblio-view h2 { font-size: 20px; font-weight: 700; padding-bottom: 8px; border-bottom: 1px solid #ddd; margin-bottom: 14px; }
+      .m-biblio-view .bib-entry { font-size: 14px; line-height: 1.6; margin-bottom: 14px; text-indent: 0; padding-left: 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ========================================================= -->
+  <!-- DESKTOP / TABLET INTERACTIVE CONTAINER                    -->
+  <!-- ========================================================= -->
+  <div class="interactive-container" id="interactive-app">
+
+    <!-- COVER SLIDE -->
+    <section class="view-cover" id="cover-view">
+      <div class="cover-content">
+        <div class="brand-badge">Economist<br>Education</div>
+        <h1 class="cover-title">Who carries<br>more weight?</h1>
+        <button class="btn-start" id="btn-start-cover" aria-label="Start Interactive">Start</button>
+      </div>
+      <div class="cover-illustration">
+        <!-- Exact reproduction of Slide 2 cover balance scale with sand/flags -->
+        <svg viewBox="0 0 520 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Soft floor shadow -->
+          <ellipse cx="260" cy="360" rx="200" ry="24" fill="#F0EFEA"/>
+          
+          <!-- Beam (Tilted slightly right towards China: 10 deg) -->
+          <g transform="rotate(9, 260, 205)">
+            <path d="M 60 205 L 460 205" stroke="#141F52" stroke-width="12" stroke-linecap="round"/>
+            <circle cx="260" cy="205" r="9" fill="#141F52"/>
+            
+            <!-- Left Pan (USA) with hanging ring -->
+            <g transform="translate(60, 205) rotate(-9)">
+              <circle cx="0" cy="0" r="14" fill="#141F52"/>
+              <circle cx="0" cy="0" r="8" fill="#ffffff"/>
+              <!-- US Flag on hanger -->
+              <circle cx="0" cy="0" r="7" fill="#E3120B"/>
+              <!-- Pan Body -->
+              <path d="M -75 0 L 75 0 L 52 42 L -52 42 Z" fill="#141F52"/>
+              <ellipse cx="0" cy="0" rx="75" ry="12" fill="#1E2F7D"/>
+              <text x="0" y="26" fill="#FFFFFF" font-family="'Noto Sans', sans-serif" font-weight="700" font-size="15" text-anchor="middle" letter-spacing="0.05em">USA</text>
+              <!-- Sand pile left -->
+              <path d="M -62 -2 Q 0 -95 62 -2 Z" fill="#E8E7DF"/>
+              <!-- US Flag post -->
+              <g transform="translate(-10, -118)">
+                <line x1="0" y1="0" x2="0" y2="40" stroke="#333333" stroke-width="2"/>
+                <rect x="0" y="0" width="36" height="22" fill="#E3120B"/>
+                <rect x="0" y="3.3" width="36" height="3.3" fill="#FFFFFF"/>
+                <rect x="0" y="10" width="36" height="3.3" fill="#FFFFFF"/>
+                <rect x="0" y="16.6" width="36" height="3.3" fill="#FFFFFF"/>
+                <rect x="0" y="0" width="16" height="12" fill="#141F52"/>
+              </g>
+            </g>
+
+            <!-- Right Pan (China) with hanging ring -->
+            <g transform="translate(460, 205) rotate(-9)">
+              <circle cx="0" cy="0" r="14" fill="#141F52"/>
+              <circle cx="0" cy="0" r="8" fill="#ffffff"/>
+              <!-- China Flag on hanger -->
+              <circle cx="0" cy="0" r="7" fill="#DE2910"/>
+              <!-- Pan Body -->
+              <path d="M -75 0 L 75 0 L 52 42 L -52 42 Z" fill="#141F52"/>
+              <ellipse cx="0" cy="0" rx="75" ry="12" fill="#1E2F7D"/>
+              <text x="0" y="26" fill="#FFFFFF" font-family="'Noto Sans', sans-serif" font-weight="700" font-size="15" text-anchor="middle" letter-spacing="0.05em">China</text>
+              <!-- Sand pile right -->
+              <path d="M -62 -2 Q 0 -95 62 -2 Z" fill="#E8E7DF"/>
+              <!-- China Flag post -->
+              <g transform="translate(10, -118)">
+                <line x1="0" y1="0" x2="0" y2="40" stroke="#333333" stroke-width="2"/>
+                <rect x="0" y="0" width="36" height="22" fill="#DE2910"/>
+                <polygon points="5,4 6,7 9,7 6.5,9 7.5,12 5,10 2.5,12 3.5,9 1,7 4,7" fill="#FFDE00"/>
+              </g>
+            </g>
+          </g>
+
+          <!-- Central Pivot & Pedestal Base -->
+          <path d="M 244 175 C 244 165 276 165 276 175 L 282 320 L 238 320 Z" fill="#141F52"/>
+          <path d="M 180 320 L 340 320 L 350 355 L 170 355 Z" fill="#1E2F7D"/>
+          <rect x="160" y="352" width="200" height="12" rx="4" fill="#141F52"/>
+          <circle cx="260" cy="205" r="14" fill="#2E45B8"/>
+          <circle cx="260" cy="205" r="7" fill="#ffffff"/>
+        </svg>
+      </div>
+    </section>
+
+    <!-- HEADER -->
+    <header class="app-header">
+      <div class="brand-section">
+        <span class="sub-title">Who carries more weight?</span>
+      </div>
+      <nav class="header-buttons" aria-label="Interactive Navigation">
+        <!-- Reset / Home -->
+        <button class="icon-btn" id="btn-reset" aria-label="Reset Infographic">
+          <svg viewBox="0 0 36 36">
+            <circle class="ring" cx="18" cy="18" r="16.5"/>
+            <path class="glyph" d="M18 10.5l-7 6.2v8.8h4.5v-5.5h5v5.5H25v-8.8l-7-6.2z"/>
+          </svg>
+        </button>
+
+        <!-- Bibliography -->
+        <button class="icon-btn" id="btn-biblio" aria-label="Open Bibliography">
+          <svg viewBox="0 0 36 36">
+            <circle class="ring" cx="18" cy="18" r="16.5"/>
+            <!-- Book Icon -->
+            <path class="glyph" d="M12 11h5v14h-5a2 2 0 0 1-2-2V13a2 2 0 0 1 2-2zm7 0h5a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-5V11z"/>
+          </svg>
+        </button>
+
+        <!-- Exit -->
+        <button class="icon-btn" id="btn-exit" aria-label="Exit Interactive">
+          <svg viewBox="0 0 36 36">
+            <circle class="ring" cx="18" cy="18" r="16.5"/>
+            <line class="xglyph" x1="12.5" y1="12.5" x2="23.5" y2="23.5"/>
+            <line class="xglyph" x1="23.5" y1="12.5" x2="12.5" y2="23.5"/>
+          </svg>
+        </button>
+      </nav>
+    </header>
+
+    <!-- MAIN STAGE -->
+    <main class="stage-view">
+      
+      <!-- LEFT: SELECTION SLIDE GRID -->
+      <section class="selection-board" aria-label="Technology Categories">
+        <!-- TOP ROW (3 ITEMS) -->
+        <div class="selection-grid-row-top">
+          <!-- 1. AI -->
+          <div class="cat-item" data-cat="ai">
+            <div class="cat-badge" role="button" tabindex="0" aria-label="AI Icon">
+              <svg viewBox="0 0 48 48">
+                <!-- Half human brain, half digital circuits -->
+                <path d="M 24 10 C 16 10 10 16 10 24 C 10 32 16 38 24 38 Z" fill="#2E45B8"/>
+                <path d="M 24 10 C 32 10 38 16 38 24 C 38 32 32 38 24 38 Z" fill="#141F52"/>
+                <!-- Circuit nodes -->
+                <circle cx="16" cy="18" r="2" fill="#E3120B"/>
+                <circle cx="14" cy="27" r="2" fill="#ffffff"/>
+                <circle cx="20" cy="32" r="2" fill="#E3120B"/>
+                <path d="M 16 18 L 24 22 L 20 32" stroke="#ffffff" stroke-width="1.5" fill="none"/>
+                <!-- Brain folds right -->
+                <path d="M 26 15 Q 33 16 31 22 Q 35 27 28 32" stroke="#ffffff" stroke-width="1.5" fill="none"/>
+              </svg>
+            </div>
+            <span class="cat-title">AI</span>
+            <div class="cat-radios">
+              <div class="radio-pill" data-choice="usa" role="radio" aria-checked="false" tabindex="0">
+                <span class="radio-circle"><span class="radio-circle-dot"></span></span>
+                <span>USA</span>
+              </div>
+              <div class="radio-pill" data-choice="china" role="radio" aria-checked="false" tabindex="0">
+                <span class="radio-circle"><span class="radio-circle-dot"></span></span>
+                <span>China</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 2. 5G -->
+          <div class="cat-item" data-cat="fiveG">
+            <div class="cat-badge" role="button" tabindex="0" aria-label="5G Icon">
+              <svg viewBox="0 0 48 48">
+                <!-- Telecom tower -->
+                <polygon points="24,12 16,38 32,38" fill="none" stroke="#141F52" stroke-width="2.5"/>
+                <line x1="19" y1="28" x2="29" y2="28" stroke="#141F52" stroke-width="2"/>
+                <line x1="21" y1="21" x2="27" y2="21" stroke="#141F52" stroke-width="2"/>
+                <circle cx="24" cy="11" r="3" fill="#E3120B"/>
+                <!-- Waves -->
+                <path d="M 17 8 Q 24 4 31 8" fill="none" stroke="#2E45B8" stroke-width="2" stroke-linecap="round"/>
+                <path d="M 13 5 Q 24 -1 35 5" fill="none" stroke="#2E45B8" stroke-width="1.8" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <span class="cat-title">5G</span>
+            <div class="cat-radios">
+              <div class="radio-pill" data-choice="usa" role="radio" aria-checked="false" tabindex="0">
+                <span class="radio-circle"><span class="radio-circle-dot"></span></span>
+                <span>USA</span>
+              </div>
+              <div class="radio-pill" data-choice="china" role="radio" aria-checked="false" tabindex="0">
+                <span class="radio-circle"><span class="radio-circle-dot"></span></span>
+                <span>China</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 3. Quantum Computing -->
+          <div class="cat-item" data-cat="quantum">
+            <div class="cat-badge" role="button" tabindex="0" aria-label="Quantum Computing Icon">
+              <svg viewBox="0 0 48 48">
+                <!-- Monitor -->
+                <rect x="8" y="10" width="32" height="22" rx="2" fill="none" stroke="#141F52" stroke-width="2.5"/>
+                <rect x="11" y="13" width="26" height="16" fill="#F0F4FA"/>
+                <path d="M 21 32 L 21 38 L 27 38 L 27 32" stroke="#141F52" stroke-width="2" fill="none"/>
+                <!-- Quantum orbit inside -->
+                <ellipse cx="24" cy="21" rx="9" ry="3.5" fill="none" stroke="#2E45B8" stroke-width="1.5" transform="rotate(30, 24, 21)"/>
+                <ellipse cx="24" cy="21" rx="9" ry="3.5" fill="none" stroke="#2E45B8" stroke-width="1.5" transform="rotate(-30, 24, 21)"/>
+                <circle cx="24" cy="21" r="2" fill="#E3120B"/>
+              </svg>
+            </div>
+            <span class="cat-title">Quantum computing and communications</span>
+            <div class="cat-radios">
+              <div class="radio-pill" data-choice="usa" role="radio" aria-checked="false" tabindex="0">
+                <span class="radio-circle"><span class="radio-circle-dot"></span></span>
+                <span>USA</span>
+              </div>
+              <div class="radio-pill" data-choice="china" role="radio" aria-checked="false" tabindex="0">
+                <span class="radio-circle"><span class="radio-circle-dot"></span></span>
+                <span>China</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- BOTTOM ROW (2 ITEMS CENTERED) -->
+        <div class="selection-grid-row-bottom">
+          <!-- 4. Self-driving cars -->
+          <div class="cat-item" data-cat="cars">
+            <div class="cat-badge" role="button" tabindex="0" aria-label="Autonomous Cars Icon">
+              <svg viewBox="0 0 48 48">
+                <!-- Autonomous vehicle with radar sensor -->
+                <path d="M 10 28 L 14 20 Q 18 16 26 16 L 34 20 L 38 28 Z" fill="#2E45B8"/>
+                <path d="M 8 26 L 40 26 L 40 33 L 8 33 Z" fill="#141F52"/>
+                <circle cx="14" cy="33" r="4.5" fill="#333333" stroke="#ffffff" stroke-width="1.5"/>
+                <circle cx="34" cy="33" r="4.5" fill="#333333" stroke="#ffffff" stroke-width="1.5"/>
+                <!-- Radar emitter on roof -->
+                <rect x="22" y="12" width="4" height="4" fill="#E3120B"/>
+                <path d="M 18 9 Q 24 5 30 9" fill="none" stroke="#E3120B" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <span class="cat-title">Self-driving cars</span>
+            <div class="cat-radios">
+              <div class="radio-pill" data-choice="usa" role="radio" aria-checked="false" tabindex="0">
+                <span class="radio-circle"><span class="radio-circle-dot"></span></span>
+                <span>USA</span>
+              </div>
+              <div class="radio-pill" data-choice="china" role="radio" aria-checked="false" tabindex="0">
+                <span class="radio-circle"><span class="radio-circle-dot"></span></span>
+                <span>China</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 5. Semiconductors -->
+          <div class="cat-item" data-cat="semiconductors">
+            <div class="cat-badge" role="button" tabindex="0" aria-label="Semiconductors Icon">
+              <svg viewBox="0 0 48 48">
+                <!-- Microchip integrated circuit -->
+                <rect x="13" y="13" width="22" height="22" rx="2" fill="#141F52"/>
+                <rect x="17" y="17" width="14" height="14" fill="#2E45B8"/>
+                <!-- Pins -->
+                <line x1="8" y1="18" x2="13" y2="18" stroke="#141F52" stroke-width="2"/>
+                <line x1="8" y1="24" x2="13" y2="24" stroke="#141F52" stroke-width="2"/>
+                <line x1="8" y1="30" x2="13" y2="30" stroke="#141F52" stroke-width="2"/>
+                <line x1="35" y1="18" x2="40" y2="18" stroke="#141F52" stroke-width="2"/>
+                <line x1="35" y1="24" x2="40" y2="24" stroke="#141F52" stroke-width="2"/>
+                <line x1="35" y1="30" x2="40" y2="30" stroke="#141F52" stroke-width="2"/>
+                <line x1="18" y1="8" x2="18" y2="13" stroke="#141F52" stroke-width="2"/>
+                <line x1="24" y1="8" x2="24" y2="13" stroke="#141F52" stroke-width="2"/>
+                <line x1="30" y1="8" x2="30" y2="13" stroke="#141F52" stroke-width="2"/>
+                <line x1="18" y1="35" x2="18" y2="40" stroke="#141F52" stroke-width="2"/>
+                <line x1="24" y1="35" x2="24" y2="40" stroke="#141F52" stroke-width="2"/>
+                <line x1="30" y1="35" x2="30" y2="40" stroke="#141F52" stroke-width="2"/>
+              </svg>
+            </div>
+            <span class="cat-title">Semiconductors</span>
+            <div class="cat-radios">
+              <div class="radio-pill" data-choice="usa" role="radio" aria-checked="false" tabindex="0">
+                <span class="radio-circle"><span class="radio-circle-dot"></span></span>
+                <span>USA</span>
+              </div>
+              <div class="radio-pill" data-choice="china" role="radio" aria-checked="false" tabindex="0">
+                <span class="radio-circle"><span class="radio-circle-dot"></span></span>
+                <span>China</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- RIGHT: DYNAMIC WEIGHING PAN SCALE -->
+      <section class="scale-stage-wrapper" aria-label="Geopolitical Balance Scale">
+        <svg class="scale-graphic-svg" viewBox="0 0 600 480" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Ambient shadow on floor -->
+          <ellipse cx="300" cy="445" rx="220" ry="26" fill="#F0EFEA"/>
+
+          <!-- ROTATING BEAM GROUP -->
+          <g id="scale-beam-group" class="scale-beam-group">
+            <!-- Beam bar -->
+            <path d="M 95 186 L 505 186" stroke="#141F52" stroke-width="13" stroke-linecap="round"/>
+            <circle cx="300" cy="186" r="10" fill="#141F52"/>
+
+            <!-- USA HANGING PAN (Left) -->
+            <g id="pan-hanging-usa" class="pan-hanging-usa" transform="translate(95, 186)">
+              <!-- Hanger Ring -->
+              <circle cx="0" cy="0" r="16" fill="#141F52"/>
+              <circle cx="0" cy="0" r="9" fill="#ffffff"/>
+              <!-- USA Flag Pin / Emblem -->
+              <g transform="translate(-8, -8) scale(0.7)">
+                <circle cx="11.5" cy="11.5" r="11.5" fill="#E3120B"/>
+                <path d="M 0 4 H 23 M 0 9 H 23 M 0 14 H 23 M 0 19 H 23" stroke="#ffffff" stroke-width="2"/>
+                <rect x="0" y="0" width="11" height="11" fill="#141F52"/>
+              </g>
+
+              <!-- USA Pan Container -->
+              <path d="M -85 0 L 85 0 L 60 48 L -60 48 Z" fill="#141F52"/>
+              <ellipse cx="0" cy="0" rx="85" ry="14" fill="#1E2F7D"/>
+              <text x="0" y="30" fill="#FFFFFF" font-family="'Noto Sans', sans-serif" font-weight="700" font-size="16" text-anchor="middle" letter-spacing="0.05em">USA</text>
+
+              <!-- ICONS DROPPED INTO USA PAN -->
+              <!-- 1. AI icon in pan -->
+              <g id="pan-icon-ai" class="pan-tray-icon" transform="translate(-46, -42) scale(0.68)">
+                <circle cx="24" cy="24" r="22" fill="#ffffff" stroke="#e0e0e0" stroke-width="1.5"/>
+                <path d="M 24 10 C 16 10 10 16 10 24 C 10 32 16 38 24 38 Z" fill="#2E45B8"/>
+                <path d="M 24 10 C 32 10 38 16 38 24 C 38 32 32 38 24 38 Z" fill="#141F52"/>
+                <circle cx="16" cy="18" r="2.5" fill="#E3120B"/>
+                <circle cx="14" cy="27" r="2.5" fill="#ffffff"/>
+                <circle cx="20" cy="32" r="2.5" fill="#E3120B"/>
+              </g>
+
+              <!-- 2. Self-driving cars icon in pan -->
+              <g id="pan-icon-cars" class="pan-tray-icon" transform="translate(-1, -42) scale(0.68)">
+                <circle cx="24" cy="24" r="22" fill="#ffffff" stroke="#e0e0e0" stroke-width="1.5"/>
+                <path d="M 10 28 L 14 20 Q 18 16 26 16 L 34 20 L 38 28 Z" fill="#2E45B8"/>
+                <path d="M 8 26 L 40 26 L 40 33 L 8 33 Z" fill="#141F52"/>
+                <circle cx="14" cy="33" r="4.5" fill="#333333" stroke="#ffffff" stroke-width="1.5"/>
+                <circle cx="34" cy="33" r="4.5" fill="#333333" stroke="#ffffff" stroke-width="1.5"/>
+                <rect x="22" y="12" width="4" height="4" fill="#E3120B"/>
+              </g>
+
+              <!-- 3. Semiconductors icon in pan -->
+              <g id="pan-icon-semiconductors" class="pan-tray-icon" transform="translate(-24, -84) scale(0.68)">
+                <circle cx="24" cy="24" r="22" fill="#ffffff" stroke="#e0e0e0" stroke-width="1.5"/>
+                <rect x="13" y="13" width="22" height="22" rx="2" fill="#141F52"/>
+                <rect x="17" y="17" width="14" height="14" fill="#2E45B8"/>
+                <line x1="8" y1="24" x2="13" y2="24" stroke="#141F52" stroke-width="2"/>
+                <line x1="35" y1="24" x2="40" y2="24" stroke="#141F52" stroke-width="2"/>
+              </g>
+            </g>
+
+            <!-- CHINA HANGING PAN (Right) -->
+            <g id="pan-hanging-china" class="pan-hanging-china" transform="translate(505, 186)">
+              <!-- Hanger Ring -->
+              <circle cx="0" cy="0" r="16" fill="#141F52"/>
+              <circle cx="0" cy="0" r="9" fill="#ffffff"/>
+              <!-- China Flag Pin / Emblem -->
+              <g transform="translate(-8, -8) scale(0.7)">
+                <circle cx="11.5" cy="11.5" r="11.5" fill="#DE2910"/>
+                <polygon points="5,4 6,7 9,7 6.5,9 7.5,12 5,10 2.5,12 3.5,9 1,7 4,7" fill="#FFDE00"/>
+              </g>
+
+              <!-- China Pan Container -->
+              <path d="M -85 0 L 85 0 L 60 48 L -60 48 Z" fill="#141F52"/>
+              <ellipse cx="0" cy="0" rx="85" ry="14" fill="#1E2F7D"/>
+              <text x="0" y="30" fill="#FFFFFF" font-family="'Noto Sans', sans-serif" font-weight="700" font-size="16" text-anchor="middle" letter-spacing="0.05em">China</text>
+
+              <!-- ICONS DROPPED INTO CHINA PAN -->
+              <!-- 1. 5G icon in pan -->
+              <g id="pan-icon-fiveG" class="pan-tray-icon" transform="translate(-40, -42) scale(0.68)">
+                <circle cx="24" cy="24" r="22" fill="#ffffff" stroke="#e0e0e0" stroke-width="1.5"/>
+                <polygon points="24,14 17,36 31,36" fill="none" stroke="#141F52" stroke-width="2.2"/>
+                <line x1="19" y1="28" x2="29" y2="28" stroke="#141F52" stroke-width="2"/>
+                <circle cx="24" cy="12" r="3" fill="#E3120B"/>
+                <path d="M 17 9 Q 24 5 31 9" fill="none" stroke="#2E45B8" stroke-width="2" stroke-linecap="round"/>
+              </g>
+
+              <!-- 2. Quantum icon in pan -->
+              <g id="pan-icon-quantum" class="pan-tray-icon" transform="translate(6, -42) scale(0.68)">
+                <circle cx="24" cy="24" r="22" fill="#ffffff" stroke="#e0e0e0" stroke-width="1.5"/>
+                <rect x="9" y="11" width="30" height="20" rx="2" fill="none" stroke="#141F52" stroke-width="2.2"/>
+                <ellipse cx="24" cy="21" rx="8" ry="3" fill="none" stroke="#2E45B8" stroke-width="1.5" transform="rotate(30, 24, 21)"/>
+                <ellipse cx="24" cy="21" rx="8" ry="3" fill="none" stroke="#2E45B8" stroke-width="1.5" transform="rotate(-30, 24, 21)"/>
+                <circle cx="24" cy="21" r="2" fill="#E3120B"/>
+              </g>
+            </g>
+          </g>
+
+          <!-- Central Stand & Heavy Pedestal -->
+          <path d="M 284 150 C 284 140 316 140 316 150 L 324 380 L 276 380 Z" fill="#141F52"/>
+          <path d="M 200 380 L 400 380 L 416 430 L 184 430 Z" fill="#1E2F7D"/>
+          <rect x="175" y="425" width="250" height="15" rx="4" fill="#141F52"/>
+          <!-- Central Pivot Hub -->
+          <circle cx="300" cy="186" r="16" fill="#2E45B8"/>
+          <circle cx="300" cy="186" r="8" fill="#ffffff"/>
+        </svg>
+      </section>
+    </main>
+
+    <!-- INSTRUCTIONS MODAL (Slide 3) -->
+    <div class="dark-overlay" id="intro-modal">
+      <div class="center-modal">
+        <h2>The US and China are going head-to-head in the realm of information technology:<br>AI, 5G, quantum computing and communications, self-driving cars and semiconductors.<br><br>Take a guess as to who is in the lead in each of these categories.</h2>
+        <button class="action-btn" id="intro-continue-btn">Continue</button>
+      </div>
+    </div>
+
+    <!-- CATEGORY EVALUATION DIALOG MODAL -->
+    <div class="dark-overlay" id="content-modal">
+      <div class="dialog-card">
+        <button class="icon-btn close-card-btn" id="close-dialog-btn" aria-label="Close dialog">
+          <svg viewBox="0 0 36 36">
+            <circle class="ring" cx="18" cy="18" r="16.5"/>
+            <line class="xglyph" x1="12.5" y1="12.5" x2="23.5" y2="23.5"/>
+            <line class="xglyph" x1="23.5" y1="12.5" x2="12.5" y2="23.5"/>
+          </svg>
+        </button>
+
+        <div class="dialog-header">
+          <div class="dialog-header-left">
+            <div id="modal-flag-emblem" class="flag-emblem"></div>
+            <h2 id="card-title">Artificial Intelligence</h2>
+          </div>
+        </div>
+        <p id="card-body">Description text</p>
+      </div>
+    </div>
+
+    <!-- COMPLETION OVERLAY MODAL -->
+    <div class="dark-overlay" id="completion-modal">
+      <div class="center-modal completion-card">
+        <button class="icon-btn close-card-btn" id="close-completion-btn" aria-label="Close dialog">
+          <svg viewBox="0 0 36 36">
+            <circle class="ring" cx="18" cy="18" r="16.5"/>
+            <line class="xglyph" x1="12.5" y1="12.5" x2="23.5" y2="23.5"/>
+            <line class="xglyph" x1="23.5" y1="12.5" x2="12.5" y2="23.5"/>
+          </svg>
+        </button>
+        <h2>You have completed this interactive infographic.<br>What would you like to do next?</h2>
+        <div class="completion-buttons">
+          <button class="action-btn" id="completion-exit-btn">Exit</button>
+          <button class="action-btn btn-outline" id="completion-biblio-btn">View bibliography</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- BIBLIOGRAPHY MODAL -->
+    <div class="biblio-overlay" id="biblio-overlay">
+      <div class="biblio-card">
+        <button class="icon-btn close-card-btn" id="close-biblio-btn" aria-label="Close Bibliography">
+          <svg viewBox="0 0 36 36">
+            <circle class="ring" cx="18" cy="18" r="16.5"/>
+            <line class="xglyph" x1="12.5" y1="12.5" x2="23.5" y2="23.5"/>
+            <line class="xglyph" x1="23.5" y1="12.5" x2="12.5" y2="23.5"/>
+          </svg>
+        </button>
+        <div class="bib-head">
+          <h2>Bibliography</h2>
+        </div>
+        <div class="bib-body">
+          <p class="bib-entry">FP Analytics. 2021. Semiconductors and the U.S.-China innovation race: geopolitics of the supply chain and the central role of Taiwan. <i>Foreign Policy</i>. 16 February. Available: https://foreignpolicy.com/2021/02/16/semiconductors-us-china-taiwan-technology-innovation-competition/ [2021, April 7].</p>
+          <p class="bib-entry">Letzter, R. 2020. China claims fastest quantum computer in the world. <i>Live Science</i>. 7 December. Available: https://www.livescience.com/china-quantum-supremacy.html [2021, April 6].</p>
+          <p class="bib-entry">Kaur, D. 2020. <i>Is China leading the quantum computing race?</i> Available: https://techwireasia.com/2020/12/is-china-leading-the-quantum-computing-race/ [2021, April 7].</p>
+          <p class="bib-entry">Knight, W. 2021. As China rises, the US builds toward a bigger role in AI. <i>Wired</i>. 3 February. Available: https://www.wired.com/story/china-rises-us-builds-bigger-role-ai/ [2021, April 7].</p>
+          <p class="bib-entry">O’Brien, C. 2019. China’s drive to dominate autonomous cars. <i>The Innovator</i>. 22 October. Available: https://innovator.news/chinas-drive-to-dominate-autonomous-cars-84894b95961f [2021, April 7].</p>
+          <p class="bib-entry">Piper, K. 2020. <i>It's 2020. Where are our self-driving cars?</i> 28 February. Available: https://www.vox.com/future-perfect/2020/2/14/21063487/self-driving-cars-autonomous-vehicles-waymo-cruise-uber [2021, April 19].</p>
+          <p class="bib-entry">Smith-Goodson, P. 2019. Quantum USA vs. quantum China: The world’s most important technology race. <i>Forbes</i>. 10 October. Available: https://www.forbes.com/sites/moorinsights/2019/10/10/quantum-usa-vs-quantum-china-the-worlds-most-important-technology-race/?sh=7f464fe072de [2021, April 7].</p>
+          <p class="bib-entry">Turner Lee, N. 2020. <i>Navigating the US-China 5G competition</i>. Available: https://www.brookings.edu/research/navigating-the-us-china-5g-competition/ [2021, April 7].</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ========================================================= -->
+  <!-- MOBILE VIEW (<=600px)                                     -->
+  <!-- ========================================================= -->
+  <div class="mobile-app" id="mobile-app" data-view="cover">
+    <!-- Cover -->
+    <section class="m-cover" id="m-cover">
+      <div class="brand-badge">Economist Education</div>
+      <h1 class="m-cover-title">Who carries<br>more weight?</h1>
+      <button class="m-btn" id="m-start" type="button">Start</button>
+    </section>
+
+    <!-- Header -->
+    <header class="m-header" id="m-header">
+      <nav class="m-header-buttons">
+        <button class="icon-btn" id="m-btn-home" type="button" aria-label="Reset">
+          <svg viewBox="0 0 36 36"><circle class="ring" cx="18" cy="18" r="16.5"/><path class="glyph" d="M18 10.5l-7 6.2v8.8h4.5v-5.5h5v5.5H25v-8.8l-7-6.2z"/></svg>
+        </button>
+        <button class="icon-btn" id="m-btn-biblio" type="button" aria-label="Bibliography">
+          <svg viewBox="0 0 36 36"><circle class="ring" cx="18" cy="18" r="16.5"/><path class="glyph" d="M12 11h5v14h-5a2 2 0 0 1-2-2V13a2 2 0 0 1 2-2zm7 0h5a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-5V11z"/></svg>
+        </button>
+        <button class="icon-btn" id="m-btn-exit" type="button" aria-label="Exit">
+          <svg viewBox="0 0 36 36"><circle class="ring" cx="18" cy="18" r="16.5"/><line class="xglyph" x1="12.5" y1="12.5" x2="23.5" y2="23.5"/><line class="xglyph" x1="23.5" y1="12.5" x2="12.5" y2="23.5"/></svg>
+        </button>
+      </nav>
+      <div class="m-subtitle">Who carries more weight?</div>
+      <hr class="m-rule">
+    </header>
+
+    <!-- Main List View -->
+    <main class="m-main-view" id="m-main-view">
+      <div class="m-scale-banner">
+        <svg viewBox="0 0 320 140" fill="none">
+          <g id="m-scale-beam" style="transform-origin: 160px 70px; transition: transform 0.6s ease;">
+            <line x1="50" y1="70" x2="270" y2="70" stroke="#141F52" stroke-width="6" stroke-linecap="round"/>
+            <circle cx="160" cy="70" r="5" fill="#141F52"/>
+            <g id="m-pan-usa" transform="translate(50, 70)">
+              <circle cx="0" cy="0" r="8" fill="#141F52"/>
+              <path d="M -40 0 L 40 0 L 28 20 L -28 20 Z" fill="#141F52"/>
+              <text x="0" y="14" fill="#ffffff" font-size="9" font-weight="700" text-anchor="middle">USA</text>
+            </g>
+            <g id="m-pan-china" transform="translate(270, 70)">
+              <circle cx="0" cy="0" r="8" fill="#141F52"/>
+              <path d="M -40 0 L 40 0 L 28 20 L -28 20 Z" fill="#141F52"/>
+              <text x="0" y="14" fill="#ffffff" font-size="9" font-weight="700" text-anchor="middle">China</text>
+            </g>
+          </g>
+          <path d="M 152 70 L 168 70 L 172 130 L 148 130 Z" fill="#141F52"/>
+          <rect x="130" y="128" width="60" height="8" rx="2" fill="#1E2F7D"/>
+        </svg>
+      </div>
+
+      <div id="m-categories-list"></div>
+    </main>
+
+    <!-- Mobile Bibliography -->
+    <section class="m-biblio-view" id="m-biblio-view">
+      <h2>Bibliography</h2>
+      <div id="m-biblio-body"></div>
+      <button class="m-btn m-btn-outline" id="m-back-main" type="button" style="width: 100%; margin-top: 14px;">Back to infographic</button>
+    </section>
+  </div>
+
+  <!-- ========================================================= -->
+  <!-- JAVASCRIPT APPLICATION LOGIC                              -->
+  <!-- ========================================================= -->
+  <script>
+    const techData = {
+      ai: {
+        title: "AI",
+        leader: "usa",
+        body: "China has surpassed the EU in the AI category; however, it has not yet surpassed the US (Knight, 2021). The US is in the lead, mostly because of its large number of AI-startups, but also the amount of research done on this subject. That said, China is not far behind and is closing the gap. The US’ National Security Commission on Artificial Intelligence (NSCAI) is aware of this and has urged the US to increase innovation and double the spending on AI research."
+      },
+      fiveG: {
+        title: "5G",
+        leader: "china",
+        body: "China is leading the way in the 5G arena. Huawei, a Chinese telecommunications giant, is currently the leader in 5G wireless technology. The deployment of 5G wireless networks in the US has slowed because of local and federal bureaucracies and security concerns relating to Huawei and ZTE (another Chinese telecommunication giant), both of whom are ahead of the pack with regard to the global supply chain for 5G equipment and software."
+      },
+      quantum: {
+        title: "Quantum computing and communications",
+        leader: "china",
+        body: "Quantum computing and communications refer to the use of the quantum phenomena to create quantum computers—computers performing calculations at a record rate—and to protect information channels against eavesdropping. In recent years, China has placed great emphasis on increasing quantum research and President Xi Jinping has funded a multi-billion-dollar quantum mega-project with the hope of achieving significant quantum developments by 2030. This has paid off, as China recently took the lead when a group of researchers built a quantum computer that could perform calculations faster than the one built by Google in 2019 (Letzer, 2020)."
+      },
+      cars: {
+        title: "Self-driving cars",
+        leader: "usa",
+        body: "Silicon Valley took an early lead in the race to develop self-driving cars, and Alphabet’s Waymo is generally considered the leader in autonomous vehicles, which puts the US ahead in this category (Piper, 2020). However, China is determined to make a breakthrough in the market. With a favourable regulatory environment and recent financial contributions from the Chinese government, China may well be the country where autonomous vehicles first appear in large numbers."
+      },
+      semiconductors: {
+        title: "Semiconductors",
+        leader: "usa",
+        body: "Semiconductor devices, more commonly known as integrated circuits or silicon chips, are crucial components for thousands of electronic devices. The US has been in the lead in the semiconductor industry for decades and 15 of the largest semiconductor firms in the world are based in the US (FP Analytics, 2021). China is a net importer of semiconductors, especially those manufactured by US firms—or leading Taiwanese firms such as the Taiwan Semiconductor Manufacturing Company (TSMC). This makes the country quite vulnerable in the face of the US-China rivalry, as most of its cutting-edge technologies, such as 5G, rely on semiconductors. However, as part of the “Made in China 2025” initiative, China is ramping up development of its domestic semiconductor industry."
+      }
+    };
+
+    // State
+    const answeredCats = new Set();
+    const panLoads = { usa: 0, china: 0 };
+
+    // Elements
+    const coverView = document.getElementById('cover-view');
+    const introModal = document.getElementById('intro-modal');
+    const contentModal = document.getElementById('content-modal');
+    const completionModal = document.getElementById('completion-modal');
+    const biblioOverlay = document.getElementById('biblio-overlay');
+    const cardTitle = document.getElementById('card-title');
+    const cardBody = document.getElementById('card-body');
+    const flagEmblem = document.getElementById('modal-flag-emblem');
+
+    // Scale Elements
+    const scaleBeamGroup = document.getElementById('scale-beam-group');
+    const panUsa = document.getElementById('pan-hanging-usa');
+    const panChina = document.getElementById('pan-hanging-china');
+
+    // Calculate Beam Angle: USA tilts CCW (-), China tilts CW (+)
+    function updateScalePhysics() {
+      const net = panLoads.china - panLoads.usa;
+      let angle = 0;
+      if (net > 0) angle = Math.min(10, 4 + net * 3);
+      else if (net < 0) angle = Math.max(-10, -4 + net * 3);
+      else angle = 0;
+
+      scaleBeamGroup.style.transform = `rotate(${angle}deg)`;
+      panUsa.style.transform = `translate(95px, 186px) rotate(${-angle}deg)`;
+      panChina.style.transform = `translate(505px, 186px) rotate(${-angle}deg)`;
+
+      // Mobile sync
+      const mBeam = document.getElementById('m-scale-beam');
+      const mPanU = document.getElementById('m-pan-usa');
+      const mPanC = document.getElementById('m-pan-china');
+      if (mBeam) {
+        mBeam.style.transform = `rotate(${angle}deg)`;
+        mPanU.style.transform = `translate(50px, 70px) rotate(${-angle}deg)`;
+        mPanC.style.transform = `translate(270px, 70px) rotate(${-angle}deg)`;
+      }
+    }
+
+    // Flag SVG Helper for Modal
+    function setModalFlag(country) {
+      if (country === 'usa') {
+        flagEmblem.innerHTML = `
+          <svg viewBox="0 0 36 36" width="100%" height="100%">
+            <circle cx="18" cy="18" r="18" fill="#E3120B"/>
+            <path d="M 0 7 H 36 M 0 14 H 36 M 0 21 H 36 M 0 28 H 36" stroke="#ffffff" stroke-width="3"/>
+            <rect x="0" y="0" width="17" height="18" fill="#141F52"/>
+          </svg>
+        `;
+      } else {
+        flagEmblem.innerHTML = `
+          <svg viewBox="0 0 36 36" width="100%" height="100%">
+            <circle cx="18" cy="18" r="18" fill="#DE2910"/>
+            <polygon points="9,7 11,12 16,12 12,15 14,20 9,17 4,20 6,15 2,12 7,12" fill="#FFDE00"/>
+          </svg>
+        `;
+      }
+    }
+
+    // Evaluation Trigger
+    function handleCategorySelection(catKey, chosenCountry) {
+      if (answeredCats.has(catKey)) return;
+      answeredCats.add(catKey);
+
+      const data = techData[catKey];
+      const isCorrect = (chosenCountry === data.leader);
+
+      // Lock and style desktop radio pills
+      const itemEl = document.querySelector(`.cat-item[data-cat="${catKey}"]`);
+      if (itemEl) {
+        const pills = itemEl.querySelectorAll('.radio-pill');
+        pills.forEach(pill => {
+          pill.classList.add('locked');
+          const choice = pill.dataset.choice;
+          if (choice === chosenCountry) {
+            pill.classList.add(isCorrect ? 'correct' : 'incorrect');
+            pill.setAttribute('aria-checked', 'true');
+          }
+        });
+      }
+
+      // Sync mobile radios
+      const mCard = document.querySelector(`.m-category-card[data-cat="${catKey}"]`);
+      if (mCard) {
+        const mPills = mCard.querySelectorAll('.m-radio-pill');
+        mPills.forEach(pill => {
+          pill.classList.add('locked');
+          const choice = pill.dataset.choice;
+          if (choice === chosenCountry) {
+            pill.classList.add(isCorrect ? 'correct' : 'incorrect');
+          }
+        });
+      }
+
+      // Add to winner's pan
+      panLoads[data.leader]++;
+      const panIcon = document.getElementById(`pan-icon-${catKey}`);
+      if (panIcon) {
+        panIcon.classList.add('active');
+      }
+
+      updateScalePhysics();
+
+      // Show Category Dialog Modal
+      setTimeout(() => {
+        cardTitle.textContent = data.title;
+        cardBody.textContent = data.body;
+        setModalFlag(data.leader);
+        contentModal.classList.add('active');
+      }, 350);
+    }
+
+    // 1. Cover Start
+    document.getElementById('btn-start-cover').addEventListener('click', () => {
+      coverView.classList.add('hidden');
+      setTimeout(() => {
+        introModal.classList.add('active');
+      }, 300);
+    });
+
+    // 2. Intro Continue
+    document.getElementById('intro-continue-btn').addEventListener('click', () => {
+      introModal.classList.remove('active');
+    });
+
+    // 3. Radio Pill Clicks (Desktop)
+    document.querySelectorAll('.cat-item').forEach(item => {
+      const catKey = item.dataset.cat;
+      item.querySelectorAll('.radio-pill').forEach(pill => {
+        pill.addEventListener('click', () => {
+          handleCategorySelection(catKey, pill.dataset.choice);
+        });
+        pill.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            handleCategorySelection(catKey, pill.dataset.choice);
+          }
+        });
+      });
+    });
+
+    // 4. Close Dialog
+    document.getElementById('close-dialog-btn').addEventListener('click', () => {
+      contentModal.classList.remove('active');
+      // Check if all 5 completed
+      if (answeredCats.size === 5) {
+        setTimeout(() => {
+          completionModal.classList.add('active');
+        }, 500);
+      }
+    });
+
+    // 5. Header Buttons & Reset
+    function resetInteractive() {
+      answeredCats.clear();
+      panLoads.usa = 0;
+      panLoads.china = 0;
+
+      document.querySelectorAll('.radio-pill').forEach(p => {
+        p.className = 'radio-pill';
+        p.setAttribute('aria-checked', 'false');
+      });
+      document.querySelectorAll('.m-radio-pill').forEach(p => {
+        p.className = 'm-radio-pill';
+      });
+
+      document.querySelectorAll('.pan-tray-icon').forEach(icon => {
+        icon.classList.remove('active');
+      });
+
+      updateScalePhysics();
+
+      contentModal.classList.remove('active');
+      introModal.classList.remove('active');
+      completionModal.classList.remove('active');
+      biblioOverlay.classList.remove('active');
+      coverView.classList.remove('hidden');
+
+      const mApp = document.getElementById('mobile-app');
+      if (mApp) mApp.setAttribute('data-view', 'cover');
+    }
+
+    document.getElementById('btn-reset').addEventListener('click', resetInteractive);
+    document.getElementById('btn-exit').addEventListener('click', resetInteractive);
+    document.getElementById('completion-exit-btn').addEventListener('click', resetInteractive);
+
+    // 6. Bibliography
+    document.getElementById('btn-biblio').addEventListener('click', () => biblioOverlay.classList.add('active'));
+    document.getElementById('close-biblio-btn').addEventListener('click', () => biblioOverlay.classList.remove('active'));
+    document.getElementById('close-completion-btn').addEventListener('click', () => completionModal.classList.remove('active'));
+    document.getElementById('completion-biblio-btn').addEventListener('click', () => {
+      completionModal.classList.remove('active');
+      biblioOverlay.classList.add('active');
+    });
+
+    // =========================================================
+    // MOBILE APP SETUP & LOGIC
+    // =========================================================
+    (function initMobile() {
+      const mApp = document.getElementById('mobile-app');
+      if (!mApp) return;
+
+      const mList = document.getElementById('m-categories-list');
+      const cats = Object.keys(techData);
+
+      cats.forEach(k => {
+        const item = techData[k];
+        const card = document.createElement('div');
+        card.className = 'm-category-card';
+        card.dataset.cat = k;
+
+        card.innerHTML = `
+          <div class="m-cat-left">
+            <div class="m-cat-badge">
+              <svg viewBox="0 0 24 24" width="24" height="24" fill="#2E45B8">
+                <circle cx="12" cy="12" r="9"/>
+              </svg>
+            </div>
+            <div class="m-cat-name">${item.title}</div>
+          </div>
+          <div class="m-cat-options">
+            <div class="m-radio-pill" data-choice="usa">USA</div>
+            <div class="m-radio-pill" data-choice="china">China</div>
+          </div>
+        `;
+
+        card.querySelectorAll('.m-radio-pill').forEach(pill => {
+          pill.addEventListener('click', () => {
+            handleCategorySelection(k, pill.dataset.choice);
+          });
+        });
+
+        mList.appendChild(card);
+      });
+
+      // Mobile Start & Navigation
+      document.getElementById('m-start').addEventListener('click', () => {
+        mApp.setAttribute('data-view', 'main');
+      });
+      document.getElementById('m-btn-home').addEventListener('click', resetInteractive);
+      document.getElementById('m-btn-exit').addEventListener('click', resetInteractive);
+      document.getElementById('m-btn-biblio').addEventListener('click', () => {
+        const cur = mApp.getAttribute('data-view');
+        mApp.setAttribute('data-view', cur === 'biblio' ? 'main' : 'biblio');
+      });
+      document.getElementById('m-back-main').addEventListener('click', () => {
+        mApp.setAttribute('data-view', 'main');
+      });
+
+      // Copy Bibliography to mobile
+      const deskBib = document.querySelector('.bib-body');
+      const mBibBody = document.getElementById('m-biblio-body');
+      if (deskBib && mBibBody) mBibBody.innerHTML = deskBib.innerHTML;
+    })();
+
+    // =========================================================
+    // PARENT IFRAME RESIZE REPORTING (MOODLE)
+    // =========================================================
+    (function () {
+      let lastSent = 0, queued = false;
+      function reportHeight() {
+        if (queued) return;
+        queued = true;
+        requestAnimationFrame(() => { queued = false; _report(); });
+      }
+      function _report(force) {
+        const h = Math.ceil(document.body.getBoundingClientRect().height) + 28;
+        if (h === lastSent && force !== true) return;
+        lastSent = h;
+        window.parent.postMessage({ type: 'resize', app: 'ce-interactive', height: h }, '*');
+      }
+      [150, 500, 1200, 2500, 5000].forEach(t => setTimeout(() => _report(true), t));
+      window.addEventListener('resize', reportHeight);
+      window.addEventListener('load', reportHeight);
+      if (window.ResizeObserver) {
+        new ResizeObserver(reportHeight).observe(document.body);
+      }
+      reportHeight();
+    })();
+  </script>
+</body>
+</html>
