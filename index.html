@@ -647,7 +647,7 @@
       margin-top: 2.25rem;
     }
 
-    /* Top overlapping circular category badge with thin white border */
+    /* Top overlapping circular category badge with ultra-thin white hairline frame */
     .modal-cat-badge {
       position: absolute;
       top: -64px;
@@ -657,7 +657,7 @@
       height: 128px;
       aspect-ratio: 1 / 1;
       border-radius: 50%;
-      border: 2px solid #ffffff;
+      border: 1px solid #ffffff;
       background-color: #EFECE6;
       box-shadow: 0 4px 12px rgba(0,0,0,0.12);
       overflow: hidden;
@@ -668,6 +668,7 @@
       width: 100%;
       height: 100%;
       object-fit: contain;
+      transform: scale(1.03);
       display: block;
     }
 
@@ -680,10 +681,10 @@
       margin-bottom: 0.5rem;
     }
 
-    /* Round American / Chinese flag positioned between "China" and "has", with second-to-last red stripe aligned to grey line */
+    /* Round American / Chinese flag positioned flush left so divider starts directly under "r" in "surpassed" */
     .flag-emblem {
       position: absolute;
-      left: 10px;
+      left: -2px;
       top: 4px;
       width: 112px;
       height: 112px;
@@ -714,11 +715,11 @@
       line-height: 1.25;
     }
 
-    /* Grey divider line starting to the right of the flag and aligning with second-last red stripe */
+    /* Grey divider line starting directly under the "r" in "surpassed" and aligning with second-last red stripe */
     .dialog-divider {
       border: 0;
       border-top: 1px solid #d7d7d7;
-      margin-left: 114px;
+      margin-left: 96px;
       margin-top: -12px;
       margin-bottom: 1.85rem;
     }
@@ -858,11 +859,11 @@
 
     /* Modal Responsive Scaling */
     .dialog-card { max-width: calc(780 * var(--u)); padding: calc(68 * var(--u)) calc(64 * var(--u)) calc(36 * var(--u)); margin-top: calc(36 * var(--u)); }
-    .modal-cat-badge { top: calc(-64 * var(--u)); width: calc(128 * var(--u)); height: calc(128 * var(--u)); border-width: calc(2 * var(--u)); }
+    .modal-cat-badge { top: calc(-64 * var(--u)); width: calc(128 * var(--u)); height: calc(128 * var(--u)); border-width: calc(1 * var(--u)); }
     .dialog-header-area { min-height: calc(96 * var(--u)); margin-bottom: calc(8 * var(--u)); }
-    .flag-emblem { left: calc(10 * var(--u)); top: calc(4 * var(--u)); width: calc(112 * var(--u)); height: calc(112 * var(--u)); }
+    .flag-emblem { left: calc(-2 * var(--u)); top: calc(4 * var(--u)); width: calc(112 * var(--u)); height: calc(112 * var(--u)); }
     .dialog-card h2 { font-size: calc(26 * var(--u)); padding: 0 calc(130 * var(--u)); }
-    .dialog-divider { margin-left: calc(114 * var(--u)); margin-top: calc(-12 * var(--u)); margin-bottom: calc(30 * var(--u)); }
+    .dialog-divider { margin-left: calc(96 * var(--u)); margin-top: calc(-12 * var(--u)); margin-bottom: calc(30 * var(--u)); }
     .dialog-card p { font-size: calc(16 * var(--u)); line-height: 1.65; margin-bottom: calc(28 * var(--u)); }
 
     .biblio-card { padding: calc(28 * var(--u)) calc(40 * var(--u)); }
@@ -1264,7 +1265,7 @@
     <!-- CATEGORY EVALUATION DIALOG MODAL -->
     <div class="dark-overlay" id="content-modal">
       <div class="dialog-card">
-        <!-- Top overlapping circular category badge with thin white border -->
+        <!-- Top overlapping circular category badge with thin hairline white border -->
         <div class="modal-cat-badge" id="modal-cat-badge">
           <img src="Resources/PastedVector-52.svg" alt="Category Icon">
         </div>
@@ -1277,7 +1278,7 @@
           <h2 id="card-title">AI</h2>
         </div>
 
-        <!-- Grey divider line starting to the right of the flag and aligning with second-last red stripe -->
+        <!-- Grey divider line starting directly under the "r" in "surpassed" and aligning with second-last red stripe -->
         <hr class="dialog-divider">
 
         <!-- Category Description -->
