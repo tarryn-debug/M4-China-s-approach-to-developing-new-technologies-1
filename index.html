@@ -499,7 +499,7 @@
       display: block;
     }
 
-    /* USA Lever Basket (Left): Moved further out and up so arm connects to rounded flag section */
+    /* USA Lever Basket (Left): PastedVector-59.svg */
     .basket-usa-group {
       position: absolute;
       left: -34%;
@@ -510,7 +510,7 @@
       z-index: 5;
     }
 
-    /* China Lever Basket (Right): Moved further out and up so arm connects to rounded flag section */
+    /* China Lever Basket (Right): PastedVector-17.svg */
     .basket-china-group {
       position: absolute;
       right: -34%;
@@ -634,41 +634,61 @@
       outline-offset: 2px;
     }
 
-    /* CATEGORY EXPLANATION MODAL */
+    /* CATEGORY EXPLANATION MODAL (Exact layout matching Image 1) */
     .dialog-card {
       background: #ffffff;
       border-radius: 0;
       width: 90%;
       max-width: 780px;
-      padding: 2.25rem 3rem 2.25rem;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+      padding: 4.5rem 4rem 2.5rem;
+      box-shadow: 0 12px 32px rgba(0,0,0,0.4);
       position: relative;
       text-align: left;
+      margin-top: 2.25rem;
     }
 
-    .dialog-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border-bottom: 1px solid #eaeaea;
-      padding-bottom: 0.85rem;
-      margin-bottom: 1.2rem;
-    }
-
-    .dialog-header-left {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-    }
-
-    .flag-emblem {
-      width: 44px;
-      height: 44px;
+    /* Top overlapping circular icon with white border */
+    .modal-cat-badge {
+      position: absolute;
+      top: -64px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 128px;
+      height: 128px;
       border-radius: 50%;
-      border: 2px solid #eaeaea;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.15);
-      flex-shrink: 0;
+      border: 6px solid #ffffff;
+      background-color: #EFECE6;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.12);
       overflow: hidden;
+      z-index: 10;
+    }
+
+    .modal-cat-badge img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .dialog-header-area {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 76px;
+      margin-bottom: 0.5rem;
+    }
+
+    /* Large American / Chinese flag on the left */
+    .flag-emblem {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 76px;
+      height: 76px;
+      border-radius: 50%;
+      overflow: hidden;
+      flex-shrink: 0;
     }
 
     .flag-emblem img {
@@ -678,16 +698,35 @@
       display: block;
     }
 
+    /* Centered category header aligned under the top icon */
     .dialog-card h2 {
-      font-size: 1.5rem;
+      font-size: 1.65rem;
       color: var(--color-text-dark);
       font-weight: 700;
+      text-align: center;
+      padding: 0 92px;
+      line-height: 1.25;
+    }
+
+    /* Grey divider line aligned with the second-to-last red stripe of the American flag */
+    .dialog-divider {
+      border: 0;
+      border-top: 1px solid #d7d7d7;
+      margin-left: 96px;
+      margin-top: -12px;
+      margin-bottom: 1.5rem;
     }
 
     .dialog-card p {
-      font-size: 0.95rem;
-      color: #222222;
+      font-size: 1rem;
+      color: #1a1a1a;
       line-height: 1.65;
+      margin-bottom: 2rem;
+    }
+
+    .dialog-footer {
+      display: flex;
+      justify-content: center;
     }
 
     .close-card-btn {
@@ -811,9 +850,14 @@
     .radio-circle { width: calc(17 * var(--u)); height: calc(17 * var(--u)); }
     .radio-circle-dot { width: calc(8 * var(--u)); height: calc(8 * var(--u)); }
 
-    .dialog-card { padding: calc(28 * var(--u)) calc(40 * var(--u)); }
-    .dialog-card h2 { font-size: calc(22 * var(--u)); }
-    .dialog-card p { font-size: calc(14.5 * var(--u)); line-height: 1.65; }
+    /* Modal Responsive Scaling */
+    .dialog-card { max-width: calc(780 * var(--u)); padding: calc(68 * var(--u)) calc(64 * var(--u)) calc(36 * var(--u)); margin-top: calc(36 * var(--u)); }
+    .modal-cat-badge { top: calc(-64 * var(--u)); width: calc(128 * var(--u)); height: calc(128 * var(--u)); border-width: calc(6 * var(--u)); }
+    .dialog-header-area { min-height: calc(76 * var(--u)); margin-bottom: calc(8 * var(--u)); }
+    .flag-emblem { width: calc(76 * var(--u)); height: calc(76 * var(--u)); }
+    .dialog-card h2 { font-size: calc(26 * var(--u)); padding: 0 calc(92 * var(--u)); }
+    .dialog-divider { margin-left: calc(96 * var(--u)); margin-top: calc(-12 * var(--u)); margin-bottom: calc(22 * var(--u)); }
+    .dialog-card p { font-size: calc(16 * var(--u)); line-height: 1.65; margin-bottom: calc(28 * var(--u)); }
 
     .biblio-card { padding: calc(28 * var(--u)) calc(40 * var(--u)); }
     .bib-head h2 { font-size: calc(22 * var(--u)); }
@@ -1211,24 +1255,32 @@
       </div>
     </div>
 
-    <!-- CATEGORY EVALUATION DIALOG MODAL -->
+    <!-- CATEGORY EVALUATION DIALOG MODAL (Exact match to Image 1) -->
     <div class="dark-overlay" id="content-modal">
       <div class="dialog-card">
-        <button class="icon-btn close-card-btn modal-close-svg" id="close-dialog-btn" aria-label="Close dialog">
-          <svg viewBox="0 0 36 36">
-            <circle class="ring" cx="18" cy="18" r="16.5"/>
-            <line class="xglyph" x1="12.5" y1="12.5" x2="23.5" y2="23.5"/>
-            <line class="xglyph" x1="23.5" y1="12.5" x2="12.5" y2="23.5"/>
-          </svg>
-        </button>
-
-        <div class="dialog-header">
-          <div class="dialog-header-left">
-            <div id="modal-flag-emblem" class="flag-emblem"></div>
-            <h2 id="card-title">Artificial Intelligence</h2>
-          </div>
+        <!-- Top overlapping circular category badge with white border -->
+        <div class="modal-cat-badge" id="modal-cat-badge">
+          <img src="Resources/PastedVector-52.svg" alt="Category Icon">
         </div>
+
+        <!-- Header Area: Large Flag left + Centered Category Title -->
+        <div class="dialog-header-area">
+          <div id="modal-flag-emblem" class="flag-emblem">
+            <img src="Resources/PastedVector-51.svg" alt="USA Flag">
+          </div>
+          <h2 id="card-title">AI</h2>
+        </div>
+
+        <!-- Grey divider line starting to the right of the flag and aligning with second-last red stripe -->
+        <hr class="dialog-divider">
+
+        <!-- Category Description -->
         <p id="card-body">Description text</p>
+
+        <!-- Continue Button returning to Slide 1 without resetting -->
+        <div class="dialog-footer">
+          <button class="action-btn" id="continue-dialog-btn">Continue</button>
+        </div>
       </div>
     </div>
 
@@ -1374,6 +1426,7 @@
     const cardTitle = document.getElementById('card-title');
     const cardBody = document.getElementById('card-body');
     const flagEmblem = document.getElementById('modal-flag-emblem');
+    const modalCatBadge = document.getElementById('modal-cat-badge');
 
     // Scale Elements
     const beamWrapper = document.getElementById('scale-beam-wrapper');
@@ -1393,10 +1446,10 @@
       basketChina.style.transform = `rotate(${-angle}deg)`;
     }
 
-    // Set Modal Flag Emblem using linked assets
+    // Set Modal Flag Emblem using linked assets (PastedVector-51 = American flag, PastedVector-61 = Chinese flag)
     function setModalFlag(country) {
       if (country === 'usa') {
-        flagEmblem.innerHTML = `<img src="Resources/PastedVector-16.svg" alt="USA Flag">`;
+        flagEmblem.innerHTML = `<img src="Resources/PastedVector-51.svg" alt="USA Flag">`;
       } else {
         flagEmblem.innerHTML = `<img src="Resources/PastedVector-61.svg" alt="China Flag">`;
       }
@@ -1450,6 +1503,7 @@
       setTimeout(() => {
         cardTitle.textContent = data.title;
         cardBody.textContent = data.body;
+        modalCatBadge.innerHTML = `<img src="${data.icon}" alt="${data.title}">`;
         setModalFlag(data.leader);
         contentModal.classList.add('active');
       }, 450);
@@ -1484,8 +1538,8 @@
       });
     });
 
-    // 4. Close Dialog
-    document.getElementById('close-dialog-btn').addEventListener('click', () => {
+    // 4. Continue Button on Category Pop-up (returns to Slide 1 without resetting)
+    document.getElementById('continue-dialog-btn').addEventListener('click', () => {
       contentModal.classList.remove('active');
       if (answeredCats.size === 5) {
         setTimeout(() => {
