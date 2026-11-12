@@ -705,6 +705,11 @@
       display: block;
     }
 
+    /* Scale Chinese flag slightly smaller to match the exact visual diameter of the American flag */
+    .flag-emblem img.flag-china {
+      transform: scale(0.84);
+    }
+
     /* Centered category header aligned under the top icon */
     .dialog-card h2 {
       font-size: 1.65rem;
@@ -1456,9 +1461,9 @@
     // Set Modal Flag Emblem using linked assets (PastedVector-51 = American flag, PastedVector-61 = Chinese flag)
     function setModalFlag(country) {
       if (country === 'usa') {
-        flagEmblem.innerHTML = `<img src="Resources/PastedVector-51.svg" alt="USA Flag">`;
+        flagEmblem.innerHTML = `<img src="Resources/PastedVector-51.svg" class="flag-usa" alt="USA Flag">`;
       } else {
-        flagEmblem.innerHTML = `<img src="Resources/PastedVector-61.svg" alt="China Flag">`;
+        flagEmblem.innerHTML = `<img src="Resources/PastedVector-61.svg" class="flag-china" alt="China Flag">`;
       }
     }
 
