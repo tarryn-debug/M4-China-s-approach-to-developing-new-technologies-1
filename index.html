@@ -647,7 +647,7 @@
       margin-top: 2.25rem;
     }
 
-    /* Top overlapping circular category badge with thin hairline white border */
+    /* Top overlapping circular category badge: identical 128px size & hairline white border across all 5 categories */
     .modal-cat-badge {
       position: absolute;
       top: -64px;
@@ -701,13 +701,16 @@
       width: 100%;
       height: 100%;
       object-fit: contain;
-      transform: scale(1.22);
       display: block;
     }
 
-    /* Scale Chinese flag slightly smaller to match the exact visual diameter of the American flag */
+    /* Compensate for internal viewBox padding differences so both flags render at the exact same diameter */
+    .flag-emblem img.flag-usa {
+      transform: scale(1.22);
+    }
+
     .flag-emblem img.flag-china {
-      transform: scale(0.84);
+      transform: scale(0.76);
     }
 
     /* Centered category header aligned under the top icon */
@@ -1278,7 +1281,7 @@
         <!-- Header Area: Round Flag left + Centered Category Title -->
         <div class="dialog-header-area">
           <div id="modal-flag-emblem" class="flag-emblem">
-            <img src="Resources/PastedVector-51.svg" alt="USA Flag">
+            <img src="Resources/PastedVector-51.svg" class="flag-usa" alt="USA Flag">
           </div>
           <h2 id="card-title">AI</h2>
         </div>
