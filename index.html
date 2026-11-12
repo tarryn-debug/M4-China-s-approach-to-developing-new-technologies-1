@@ -82,21 +82,8 @@
       display: flex;
       flex-direction: column;
       align-items: flex-start;
-      gap: 1.75rem;
+      gap: 2rem;
       z-index: 2;
-    }
-
-    .brand-badge {
-      display: inline-block;
-      background-color: #E3120B;
-      color: #ffffff;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      padding: 7px 11px;
-      line-height: 1.25;
-      font-family: var(--font-main);
     }
 
     .cover-title {
@@ -170,7 +157,7 @@
     }
 
     /* ========================================================= */
-    /* 2. HEADER & STAGE                                         */
+    /* 2. HEADER & RESOURCE-LINKED ICON BUTTONS                  */
     /* ========================================================= */
     .app-header {
       position: relative;
@@ -202,9 +189,6 @@
     }
 
     .icon-btn {
-      --ring: #475ED1;
-      --ring-fill: transparent;
-      --glyph: #475ED1;
       width: 36px;
       height: 36px;
       padding: 0;
@@ -217,77 +201,112 @@
       position: relative;
     }
 
-    .icon-btn svg {
+    .icon-btn img {
       width: 100%;
       height: 100%;
       display: block;
-      overflow: visible;
+      object-fit: contain;
+      pointer-events: none;
     }
 
-    .icon-btn .ring {
-      fill: var(--ring-fill);
-      stroke: var(--ring);
-      stroke-width: 1;
+    .icon-btn .btn-state-hover,
+    .icon-btn .btn-state-pressed {
+      display: none;
     }
 
-    .icon-btn .glyph {
-      fill: var(--glyph);
+    .icon-btn:hover .btn-state-normal,
+    .icon-btn:focus-visible .btn-state-normal {
+      display: none;
+    }
+    .icon-btn:hover .btn-state-hover,
+    .icon-btn:focus-visible .btn-state-hover {
+      display: block;
     }
 
-    .icon-btn .xglyph {
-      fill: none;
-      stroke: var(--glyph);
-      stroke-width: 2;
-      stroke-linecap: butt;
+    .icon-btn:active .btn-state-normal,
+    .icon-btn:active .btn-state-hover {
+      display: none;
+    }
+    .icon-btn:active .btn-state-pressed {
+      display: block;
     }
 
-    .icon-btn:hover,
     .icon-btn:focus-visible {
+      outline: 2px solid var(--color-teal);
+      outline-offset: 2px;
+    }
+
+    /* SVG-based close button inside modals */
+    .modal-close-svg {
+      --ring: #475ED1;
+      --ring-fill: transparent;
+      --glyph: #475ED1;
+    }
+    .modal-close-svg svg { width: 100%; height: 100%; display: block; }
+    .modal-close-svg .ring { fill: var(--ring-fill); stroke: var(--ring); stroke-width: 1; }
+    .modal-close-svg .xglyph { fill: none; stroke: var(--glyph); stroke-width: 2; stroke-linecap: butt; }
+    .modal-close-svg:hover,
+    .modal-close-svg:focus-visible {
       --ring: #1f2e7a;
       --ring-fill: #ebedfa;
       --glyph: #1f2e7a;
       outline: none;
     }
-
-    .icon-btn:active {
+    .modal-close-svg:active {
       --ring: #1dc9a4;
       --ring-fill: transparent;
       --glyph: #1f2e7a;
     }
 
-    /* MAIN STAGE SPLIT LAYOUT */
+    /* ========================================================= */
+    /* 3. MAIN STAGE SPLIT LAYOUT                                */
+    /* ========================================================= */
     .stage-view {
       position: relative;
       width: 100%;
       height: 90%;
       background-color: #ffffff;
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       justify-content: space-between;
-      padding: 1.5rem 2.5rem 1.75rem 3.5rem;
-      gap: 1rem;
-    }
-
-    /* LEFT: SELECTION BOARD */
-    .selection-board {
-      width: 48%;
-      max-width: 490px;
-      display: flex;
-      flex-direction: column;
-      gap: 1.25rem;
-      z-index: 2;
-    }
-
-    .selection-grid-row-top {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      padding: 1.15rem 2.25rem 1.25rem 2.75rem;
       gap: 0.75rem;
     }
 
-    .selection-grid-row-bottom {
-      display: flex;
-      justify-content: center;
-      gap: 2.5rem;
+    /* LEFT: SELECTION BOARD (6-column staggered grid for exact centering) */
+    .selection-board {
+      width: 52%;
+      max-width: 560px;
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      row-gap: 1.1rem;
+      column-gap: 0.4rem;
+      padding-top: 0.1rem;
+      z-index: 2;
+    }
+
+    /* Top Row: 3 items spanning 2 columns each (Cols 1-2, 3-4, 5-6) */
+    .cat-item[data-cat="ai"] {
+      grid-column: 1 / 3;
+      grid-row: 1;
+    }
+    .cat-item[data-cat="fiveG"] {
+      grid-column: 3 / 5;
+      grid-row: 1;
+    }
+    .cat-item[data-cat="quantum"] {
+      grid-column: 5 / 7;
+      grid-row: 1;
+    }
+
+    /* Bottom Row: 2 items sitting directly between Top Row columns (Cols 2-4 and 4-6) */
+    .cat-item[data-cat="cars"] {
+      grid-column: 2 / 4;
+      grid-row: 2;
+    }
+    .cat-item[data-cat="semiconductors"] {
+      grid-column: 4 / 6;
+      grid-row: 2;
     }
 
     .cat-item {
@@ -295,12 +314,14 @@
       flex-direction: column;
       align-items: center;
       text-align: center;
-      width: 124px;
+      justify-self: center;
+      width: 172px;
     }
 
+    /* Increased Category Icon Size */
     .cat-badge {
-      width: 68px;
-      height: 68px;
+      width: 108px;
+      height: 108px;
       border-radius: 50%;
       background-color: transparent;
       display: flex;
@@ -317,34 +338,36 @@
       display: block;
     }
 
+    /* Increased Category Title Size */
     .cat-title {
-      font-size: 0.75rem;
+      font-size: 16px;
       font-weight: 700;
       color: #111111;
-      line-height: 1.2;
-      min-height: 2.2rem;
+      line-height: 1.25;
+      min-height: 2.6rem;
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-bottom: 0.4rem;
+      margin-bottom: 0.45rem;
     }
 
     .cat-radios {
       display: flex;
       flex-direction: column;
-      gap: 0.25rem;
-      width: 100%;
+      gap: 0.3rem;
+      width: 118px;
     }
 
+    /* Increased Radio Option Text Size */
     .radio-pill {
       display: flex;
       align-items: center;
-      gap: 0.4rem;
-      font-size: 0.78rem;
+      gap: 0.5rem;
+      font-size: 16px;
       color: #111111;
       font-weight: 500;
       cursor: pointer;
-      padding: 2px 6px;
+      padding: 3px 8px;
       border-radius: 3px;
       border: 1px solid transparent;
       user-select: none;
@@ -352,8 +375,8 @@
     }
 
     .radio-circle {
-      width: 14px;
-      height: 14px;
+      width: 17px;
+      height: 17px;
       border-radius: 50%;
       border: 1.5px solid #222222;
       display: flex;
@@ -365,8 +388,8 @@
     }
 
     .radio-circle-dot {
-      width: 6px;
-      height: 6px;
+      width: 8px;
+      height: 8px;
       border-radius: 50%;
       background: #222222;
       opacity: 0;
@@ -410,9 +433,11 @@
       pointer-events: none;
     }
 
-    /* RIGHT: DYNAMIC WEIGHING SCALE STAGE (Linked SVG Assets) */
+    /* ========================================================= */
+    /* 4. RIGHT: DYNAMIC WEIGHING SCALE STAGE                    */
+    /* ========================================================= */
     .scale-stage-wrapper {
-      width: 52%;
+      width: 48%;
       height: 100%;
       position: relative;
       display: flex;
@@ -423,14 +448,14 @@
     .scale-assembly {
       position: relative;
       width: 100%;
-      max-width: 520px;
-      aspect-ratio: 520 / 420;
+      max-width: 510px;
+      aspect-ratio: 530 / 430;
     }
 
-    /* Grey shadow ellipse at the bottom */
+    /* Grey circle shadow at the bottom */
     .scale-grey-shadow {
       position: absolute;
-      bottom: 2%;
+      bottom: 3%;
       left: 50%;
       transform: translateX(-50%);
       width: 90%;
@@ -443,21 +468,21 @@
     /* Base of the scale: PastedVector-49.svg */
     .scale-base-img {
       position: absolute;
-      bottom: 6%;
+      bottom: 7%;
       left: 50%;
       transform: translateX(-50%);
-      width: 59%;
+      width: 58%;
       height: auto;
-      z-index: 4;
+      z-index: 2;
       pointer-events: none;
     }
 
-    /* Rotating lever arm & baskets group */
+    /* Rotating lever arm & baskets group aligned directly with the circular pivot joint in the base */
     .scale-beam-wrapper {
       position: absolute;
-      top: 38%;
+      top: 49.5%;
       left: 50%;
-      width: 61%;
+      width: 60%;
       height: 32px;
       transform: translate(-50%, -50%) rotate(0deg);
       transform-origin: 50% 50%;
@@ -471,6 +496,21 @@
       height: 100%;
       object-fit: contain;
       display: block;
+    }
+
+    /* Center pivot joint circle overlay to match Image 2 */
+    .scale-pivot-joint {
+      position: absolute;
+      top: 49.5%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background-color: #1F2E7A;
+      border: 3px solid #141F52;
+      z-index: 4;
+      pointer-events: none;
     }
 
     /* USA Lever Basket (Left end of arm): PastedVector-59.svg */
@@ -506,7 +546,7 @@
     /* Dropped icons resting inside the weighing pans */
     .pan-dropped-icon {
       position: absolute;
-      width: 31%;
+      width: 32%;
       height: auto;
       opacity: 0;
       transform: translateY(-20px) scale(0.8);
@@ -523,29 +563,29 @@
     /* Exact placement inside the USA pan (AI, Self-driving cars, Semiconductors) */
     #pan-icon-ai {
       bottom: 66%;
-      left: 17%;
+      left: 16%;
     }
     #pan-icon-cars {
       bottom: 66%;
-      right: 17%;
+      right: 16%;
     }
     #pan-icon-semiconductors {
       bottom: 94%;
-      left: 34.5%;
+      left: 34%;
     }
 
     /* Exact placement inside the China pan (5G, Quantum) */
     #pan-icon-fiveG {
       bottom: 66%;
-      left: 17%;
+      left: 16%;
     }
     #pan-icon-quantum {
       bottom: 66%;
-      right: 17%;
+      right: 16%;
     }
 
     /* ========================================================= */
-    /* 3. MODALS & POP-UPS                                       */
+    /* 5. MODALS & POP-UPS                                       */
     /* ========================================================= */
     .dark-overlay {
       position: absolute;
@@ -775,11 +815,17 @@
     .cover-title { font-size: calc(46 * var(--u)); }
     .btn-start { width: calc(152 * var(--u)); height: calc(44 * var(--u)); font-size: calc(16 * var(--u)); }
 
-    .cat-item { width: calc(118 * var(--u)); }
-    .cat-badge { width: calc(66 * var(--u)); height: calc(66 * var(--u)); }
-    .cat-title { font-size: calc(11.5 * var(--u)); }
-    .radio-pill { font-size: calc(12 * var(--u)); padding: calc(2 * var(--u)) calc(6 * var(--u)); }
-    .radio-circle { width: calc(14 * var(--u)); height: calc(14 * var(--u)); }
+    .stage-view { padding: calc(16 * var(--u)) calc(34 * var(--u)) calc(20 * var(--u)) calc(42 * var(--u)); }
+    .selection-board { row-gap: calc(16 * var(--u)); }
+    .cat-item { width: calc(172 * var(--u)); }
+    .cat-badge { width: calc(108 * var(--u)); height: calc(108 * var(--u)); margin-bottom: calc(6 * var(--u)); }
+    .cat-title { font-size: calc(16 * var(--u)); min-height: calc(40 * var(--u)); margin-bottom: calc(6 * var(--u)); }
+    .cat-radios { width: calc(118 * var(--u)); gap: calc(4 * var(--u)); }
+    .radio-pill { font-size: calc(16 * var(--u)); padding: calc(3 * var(--u)) calc(8 * var(--u)); gap: calc(7 * var(--u)); }
+    .radio-circle { width: calc(17 * var(--u)); height: calc(17 * var(--u)); }
+    .radio-circle-dot { width: calc(8 * var(--u)); height: calc(8 * var(--u)); }
+
+    .scale-pivot-joint { width: calc(22 * var(--u)); height: calc(22 * var(--u)); border-width: calc(3 * var(--u)); }
 
     .dialog-card { padding: calc(28 * var(--u)) calc(40 * var(--u)); }
     .dialog-card h2 { font-size: calc(22 * var(--u)); }
@@ -790,7 +836,7 @@
     .bib-body { font-size: calc(14.5 * var(--u)); }
 
     /* ========================================================= */
-    /* 4. MOBILE VIEW (<=600px)                                  */
+    /* 6. MOBILE VIEW (<=600px)                                  */
     /* ========================================================= */
     .mobile-app { display: none; }
 
@@ -871,8 +917,8 @@
       }
 
       .m-cat-badge {
-        width: 44px;
-        height: 44px;
+        width: 56px;
+        height: 56px;
         border-radius: 50%;
         display: flex;
         align-items: center;
@@ -882,10 +928,10 @@
       .m-cat-badge img { width: 100%; height: 100%; object-fit: contain; }
 
       .m-cat-name {
-        font-size: 14px;
+        font-size: 16px;
         font-weight: 700;
         color: #111;
-        max-width: 120px;
+        max-width: 140px;
         line-height: 1.25;
       }
 
@@ -899,9 +945,9 @@
         display: flex;
         align-items: center;
         gap: 6px;
-        font-size: 13px;
+        font-size: 15px;
         font-weight: 500;
-        padding: 4px 8px;
+        padding: 5px 10px;
         border-radius: 4px;
         border: 1px solid #ccc;
         background: #fff;
@@ -938,12 +984,10 @@
     <!-- COVER SLIDE -->
     <section class="view-cover" id="cover-view">
       <div class="cover-content">
-        <div class="brand-badge">Economist<br>Education</div>
         <h1 class="cover-title">Who carries<br>more weight?</h1>
         <button class="btn-start" id="btn-start-cover" aria-label="Start Interactive">Start</button>
       </div>
       <div class="cover-illustration">
-        <!-- Cover balance scale with sand & flags -->
         <svg viewBox="0 0 540 420" fill="none" xmlns="http://www.w3.org/2000/svg">
           <ellipse cx="270" cy="385" rx="230" ry="26" fill="#F4F3EE"/>
           <g transform="rotate(-8.5, 270, 230)">
@@ -1015,136 +1059,126 @@
       </div>
     </section>
 
-    <!-- HEADER -->
+    <!-- HEADER WITH EXACT RESOURCE-LINKED ICON STATES -->
     <header class="app-header">
       <div class="brand-section">
         <span class="sub-title">Who carries more weight?</span>
       </div>
       <nav class="header-buttons" aria-label="Interactive Navigation">
-        <!-- Reset / Home -->
+        <!-- House Icon: PastedVector-7 / Home over / Home pressed -->
         <button class="icon-btn" id="btn-reset" aria-label="Reset Infographic">
-          <svg viewBox="0 0 36 36">
-            <circle class="ring" cx="18" cy="18" r="16.5"/>
-            <path class="glyph" d="M18 10.5l-7 6.2v8.8h4.5v-5.5h5v5.5H25v-8.8l-7-6.2z"/>
-          </svg>
+          <img class="btn-state-normal" src="Resources/PastedVector-7.svg" alt="Home">
+          <img class="btn-state-hover" src="Resources/Home over.svg" alt="Home">
+          <img class="btn-state-pressed" src="Resources/Home pressed.svg" alt="Home">
         </button>
 
-        <!-- Bibliography -->
+        <!-- Bibliography Icon: PastedVector-8 / Bibliography over / Bibliography pressed -->
         <button class="icon-btn" id="btn-biblio" aria-label="Open Bibliography">
-          <svg viewBox="0 0 36 36">
-            <circle class="ring" cx="18" cy="18" r="16.5"/>
-            <path class="glyph" d="M12 11h5v14h-5a2 2 0 0 1-2-2V13a2 2 0 0 1 2-2zm7 0h5a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-5V11z"/>
-          </svg>
+          <img class="btn-state-normal" src="Resources/PastedVector-8.svg" alt="Bibliography">
+          <img class="btn-state-hover" src="Resources/Bibliography over.svg" alt="Bibliography">
+          <img class="btn-state-pressed" src="Resources/Bibliography pressed.svg" alt="Bibliography">
         </button>
 
-        <!-- Exit -->
+        <!-- Close Icon: PastedVector-9 / Close over / Close pressed -->
         <button class="icon-btn" id="btn-exit" aria-label="Exit Interactive">
-          <svg viewBox="0 0 36 36">
-            <circle class="ring" cx="18" cy="18" r="16.5"/>
-            <line class="xglyph" x1="12.5" y1="12.5" x2="23.5" y2="23.5"/>
-            <line class="xglyph" x1="23.5" y1="12.5" x2="12.5" y2="23.5"/>
-          </svg>
+          <img class="btn-state-normal" src="Resources/PastedVector-9.svg" alt="Close">
+          <img class="btn-state-hover" src="Resources/Close over.svg" alt="Close">
+          <img class="btn-state-pressed" src="Resources/Close pressed.svg" alt="Close">
         </button>
       </nav>
     </header>
 
-    <!-- MAIN STAGE (FIRST SLIDE) -->
+    <!-- MAIN STAGE (SLIDE 1) -->
     <main class="stage-view">
       
       <!-- LEFT: SELECTION SLIDE GRID -->
       <section class="selection-board" aria-label="Technology Categories">
-        <!-- TOP ROW (3 ITEMS) -->
-        <div class="selection-grid-row-top">
-          <!-- 1. AI Icon: PastedVector-52 -->
-          <div class="cat-item" data-cat="ai">
-            <div class="cat-badge">
-              <img src="Resources/PastedVector-52.svg" alt="AI Icon">
-            </div>
-            <span class="cat-title">AI</span>
-            <div class="cat-radios">
-              <div class="radio-pill" data-choice="usa" role="radio" aria-checked="false" tabindex="0">
-                <span class="radio-circle"><span class="radio-circle-dot"></span></span>
-                <span>USA</span>
-              </div>
-              <div class="radio-pill" data-choice="china" role="radio" aria-checked="false" tabindex="0">
-                <span class="radio-circle"><span class="radio-circle-dot"></span></span>
-                <span>China</span>
-              </div>
-            </div>
+        <!-- 1. AI Icon: PastedVector-52 -->
+        <div class="cat-item" data-cat="ai">
+          <div class="cat-badge">
+            <img src="Resources/PastedVector-52.svg" alt="AI Icon">
           </div>
-
-          <!-- 2. 5G Icon: PastedVector-62 -->
-          <div class="cat-item" data-cat="fiveG">
-            <div class="cat-badge">
-              <img src="Resources/PastedVector-62.svg" alt="5G Icon">
+          <span class="cat-title">AI</span>
+          <div class="cat-radios">
+            <div class="radio-pill" data-choice="usa" role="radio" aria-checked="false" tabindex="0">
+              <span class="radio-circle"><span class="radio-circle-dot"></span></span>
+              <span>USA</span>
             </div>
-            <span class="cat-title">5G</span>
-            <div class="cat-radios">
-              <div class="radio-pill" data-choice="usa" role="radio" aria-checked="false" tabindex="0">
-                <span class="radio-circle"><span class="radio-circle-dot"></span></span>
-                <span>USA</span>
-              </div>
-              <div class="radio-pill" data-choice="china" role="radio" aria-checked="false" tabindex="0">
-                <span class="radio-circle"><span class="radio-circle-dot"></span></span>
-                <span>China</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- 3. Quantum Computing Icon: PastedVector-63 -->
-          <div class="cat-item" data-cat="quantum">
-            <div class="cat-badge">
-              <img src="Resources/PastedVector-63.svg" alt="Quantum computing and communications icon">
-            </div>
-            <span class="cat-title">Quantum computing and communications</span>
-            <div class="cat-radios">
-              <div class="radio-pill" data-choice="usa" role="radio" aria-checked="false" tabindex="0">
-                <span class="radio-circle"><span class="radio-circle-dot"></span></span>
-                <span>USA</span>
-              </div>
-              <div class="radio-pill" data-choice="china" role="radio" aria-checked="false" tabindex="0">
-                <span class="radio-circle"><span class="radio-circle-dot"></span></span>
-                <span>China</span>
-              </div>
+            <div class="radio-pill" data-choice="china" role="radio" aria-checked="false" tabindex="0">
+              <span class="radio-circle"><span class="radio-circle-dot"></span></span>
+              <span>China</span>
             </div>
           </div>
         </div>
 
-        <!-- BOTTOM ROW (2 ITEMS CENTERED) -->
-        <div class="selection-grid-row-bottom">
-          <!-- 4. Self-driving cars icon: PastedVector-64 -->
-          <div class="cat-item" data-cat="cars">
-            <div class="cat-badge">
-              <img src="Resources/PastedVector-64.svg" alt="Self-driving cars icon">
+        <!-- 2. 5G Icon: PastedVector-62 -->
+        <div class="cat-item" data-cat="fiveG">
+          <div class="cat-badge">
+            <img src="Resources/PastedVector-62.svg" alt="5G Icon">
+          </div>
+          <span class="cat-title">5G</span>
+          <div class="cat-radios">
+            <div class="radio-pill" data-choice="usa" role="radio" aria-checked="false" tabindex="0">
+              <span class="radio-circle"><span class="radio-circle-dot"></span></span>
+              <span>USA</span>
             </div>
-            <span class="cat-title">Self-driving cars</span>
-            <div class="cat-radios">
-              <div class="radio-pill" data-choice="usa" role="radio" aria-checked="false" tabindex="0">
-                <span class="radio-circle"><span class="radio-circle-dot"></span></span>
-                <span>USA</span>
-              </div>
-              <div class="radio-pill" data-choice="china" role="radio" aria-checked="false" tabindex="0">
-                <span class="radio-circle"><span class="radio-circle-dot"></span></span>
-                <span>China</span>
-              </div>
+            <div class="radio-pill" data-choice="china" role="radio" aria-checked="false" tabindex="0">
+              <span class="radio-circle"><span class="radio-circle-dot"></span></span>
+              <span>China</span>
             </div>
           </div>
+        </div>
 
-          <!-- 5. Semiconductors icon: PastedVector-65 -->
-          <div class="cat-item" data-cat="semiconductors">
-            <div class="cat-badge">
-              <img src="Resources/PastedVector-65.svg" alt="Semiconductors icon">
+        <!-- 3. Quantum Computing Icon: PastedVector-63 -->
+        <div class="cat-item" data-cat="quantum">
+          <div class="cat-badge">
+            <img src="Resources/PastedVector-63.svg" alt="Quantum computing and communications icon">
+          </div>
+          <span class="cat-title">Quantum computing and communications</span>
+          <div class="cat-radios">
+            <div class="radio-pill" data-choice="usa" role="radio" aria-checked="false" tabindex="0">
+              <span class="radio-circle"><span class="radio-circle-dot"></span></span>
+              <span>USA</span>
             </div>
-            <span class="cat-title">Semiconductors</span>
-            <div class="cat-radios">
-              <div class="radio-pill" data-choice="usa" role="radio" aria-checked="false" tabindex="0">
-                <span class="radio-circle"><span class="radio-circle-dot"></span></span>
-                <span>USA</span>
-              </div>
-              <div class="radio-pill" data-choice="china" role="radio" aria-checked="false" tabindex="0">
-                <span class="radio-circle"><span class="radio-circle-dot"></span></span>
-                <span>China</span>
-              </div>
+            <div class="radio-pill" data-choice="china" role="radio" aria-checked="false" tabindex="0">
+              <span class="radio-circle"><span class="radio-circle-dot"></span></span>
+              <span>China</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4. Self-driving cars icon: PastedVector-64 (Centered between AI & 5G) -->
+        <div class="cat-item" data-cat="cars">
+          <div class="cat-badge">
+            <img src="Resources/PastedVector-64.svg" alt="Self-driving cars icon">
+          </div>
+          <span class="cat-title">Self-driving cars</span>
+          <div class="cat-radios">
+            <div class="radio-pill" data-choice="usa" role="radio" aria-checked="false" tabindex="0">
+              <span class="radio-circle"><span class="radio-circle-dot"></span></span>
+              <span>USA</span>
+            </div>
+            <div class="radio-pill" data-choice="china" role="radio" aria-checked="false" tabindex="0">
+              <span class="radio-circle"><span class="radio-circle-dot"></span></span>
+              <span>China</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 5. Semiconductors icon: PastedVector-65 (Centered between 5G & Quantum) -->
+        <div class="cat-item" data-cat="semiconductors">
+          <div class="cat-badge">
+            <img src="Resources/PastedVector-65.svg" alt="Semiconductors icon">
+          </div>
+          <span class="cat-title">Semiconductors</span>
+          <div class="cat-radios">
+            <div class="radio-pill" data-choice="usa" role="radio" aria-checked="false" tabindex="0">
+              <span class="radio-circle"><span class="radio-circle-dot"></span></span>
+              <span>USA</span>
+            </div>
+            <div class="radio-pill" data-choice="china" role="radio" aria-checked="false" tabindex="0">
+              <span class="radio-circle"><span class="radio-circle-dot"></span></span>
+              <span>China</span>
             </div>
           </div>
         </div>
@@ -1181,6 +1215,9 @@
             </div>
           </div>
 
+          <!-- Central Pivot Joint Circle aligned over arm & base -->
+          <div class="scale-pivot-joint"></div>
+
         </div>
       </section>
     </main>
@@ -1196,7 +1233,7 @@
     <!-- CATEGORY EVALUATION DIALOG MODAL -->
     <div class="dark-overlay" id="content-modal">
       <div class="dialog-card">
-        <button class="icon-btn close-card-btn" id="close-dialog-btn" aria-label="Close dialog">
+        <button class="icon-btn close-card-btn modal-close-svg" id="close-dialog-btn" aria-label="Close dialog">
           <svg viewBox="0 0 36 36">
             <circle class="ring" cx="18" cy="18" r="16.5"/>
             <line class="xglyph" x1="12.5" y1="12.5" x2="23.5" y2="23.5"/>
@@ -1217,7 +1254,7 @@
     <!-- COMPLETION OVERLAY MODAL -->
     <div class="dark-overlay" id="completion-modal">
       <div class="center-modal completion-card">
-        <button class="icon-btn close-card-btn" id="close-completion-btn" aria-label="Close dialog">
+        <button class="icon-btn close-card-btn modal-close-svg" id="close-completion-btn" aria-label="Close dialog">
           <svg viewBox="0 0 36 36">
             <circle class="ring" cx="18" cy="18" r="16.5"/>
             <line class="xglyph" x1="12.5" y1="12.5" x2="23.5" y2="23.5"/>
@@ -1235,7 +1272,7 @@
     <!-- BIBLIOGRAPHY MODAL -->
     <div class="biblio-overlay" id="biblio-overlay">
       <div class="biblio-card">
-        <button class="icon-btn close-card-btn" id="close-biblio-btn" aria-label="Close Bibliography">
+        <button class="icon-btn close-card-btn modal-close-svg" id="close-biblio-btn" aria-label="Close Bibliography">
           <svg viewBox="0 0 36 36">
             <circle class="ring" cx="18" cy="18" r="16.5"/>
             <line class="xglyph" x1="12.5" y1="12.5" x2="23.5" y2="23.5"/>
@@ -1266,7 +1303,6 @@
   <div class="mobile-app" id="mobile-app" data-view="cover">
     <!-- Cover -->
     <section class="m-cover" id="m-cover">
-      <div class="brand-badge">Economist Education</div>
       <h1 class="m-cover-title">Who carries<br>more weight?</h1>
       <button class="m-btn" id="m-start" type="button">Start</button>
     </section>
@@ -1275,13 +1311,19 @@
     <header class="m-header" id="m-header">
       <nav class="m-header-buttons">
         <button class="icon-btn" id="m-btn-home" type="button" aria-label="Reset">
-          <svg viewBox="0 0 36 36"><circle class="ring" cx="18" cy="18" r="16.5"/><path class="glyph" d="M18 10.5l-7 6.2v8.8h4.5v-5.5h5v5.5H25v-8.8l-7-6.2z"/></svg>
+          <img class="btn-state-normal" src="Resources/PastedVector-7.svg" alt="Home">
+          <img class="btn-state-hover" src="Resources/Home over.svg" alt="Home">
+          <img class="btn-state-pressed" src="Resources/Home pressed.svg" alt="Home">
         </button>
         <button class="icon-btn" id="m-btn-biblio" type="button" aria-label="Bibliography">
-          <svg viewBox="0 0 36 36"><circle class="ring" cx="18" cy="18" r="16.5"/><path class="glyph" d="M12 11h5v14h-5a2 2 0 0 1-2-2V13a2 2 0 0 1 2-2zm7 0h5a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-5V11z"/></svg>
+          <img class="btn-state-normal" src="Resources/PastedVector-8.svg" alt="Bibliography">
+          <img class="btn-state-hover" src="Resources/Bibliography over.svg" alt="Bibliography">
+          <img class="btn-state-pressed" src="Resources/Bibliography pressed.svg" alt="Bibliography">
         </button>
         <button class="icon-btn" id="m-btn-exit" type="button" aria-label="Exit">
-          <svg viewBox="0 0 36 36"><circle class="ring" cx="18" cy="18" r="16.5"/><line class="xglyph" x1="12.5" y1="12.5" x2="23.5" y2="23.5"/><line class="xglyph" x1="23.5" y1="12.5" x2="12.5" y2="23.5"/></svg>
+          <img class="btn-state-normal" src="Resources/PastedVector-9.svg" alt="Close">
+          <img class="btn-state-hover" src="Resources/Close over.svg" alt="Close">
+          <img class="btn-state-pressed" src="Resources/Close pressed.svg" alt="Close">
         </button>
       </nav>
       <div class="m-subtitle">Who carries more weight?</div>
@@ -1370,7 +1412,7 @@
       basketChina.style.transform = `rotate(${-angle}deg)`;
     }
 
-    // Set Modal Flag Emblem using linked assets (PastedVector-16 = USA, PastedVector-61 = China)
+    // Set Modal Flag Emblem using linked assets
     function setModalFlag(country) {
       if (country === 'usa') {
         flagEmblem.innerHTML = `<img src="Resources/PastedVector-16.svg" alt="USA Flag">`;
