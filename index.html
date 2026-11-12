@@ -676,17 +676,17 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      min-height: 92px;
+      min-height: 96px;
       margin-bottom: 0.5rem;
     }
 
-    /* Large round American / Chinese flag matching Image 1 */
+    /* Round American / Chinese flag positioned between "China" and "has", with second-to-last red stripe aligned to grey line */
     .flag-emblem {
       position: absolute;
-      left: -14px;
-      top: -18px;
-      width: 114px;
-      height: 114px;
+      left: 10px;
+      top: 4px;
+      width: 112px;
+      height: 112px;
       aspect-ratio: 1 / 1;
       border-radius: 50%;
       overflow: hidden;
@@ -710,7 +710,7 @@
       color: var(--color-text-dark);
       font-weight: 700;
       text-align: center;
-      padding: 0 112px;
+      padding: 0 130px;
       line-height: 1.25;
     }
 
@@ -718,9 +718,9 @@
     .dialog-divider {
       border: 0;
       border-top: 1px solid #d7d7d7;
-      margin-left: 96px;
-      margin-top: -16px;
-      margin-bottom: 1.75rem;
+      margin-left: 114px;
+      margin-top: -12px;
+      margin-bottom: 1.85rem;
     }
 
     .dialog-card p {
@@ -859,10 +859,10 @@
     /* Modal Responsive Scaling */
     .dialog-card { max-width: calc(780 * var(--u)); padding: calc(68 * var(--u)) calc(64 * var(--u)) calc(36 * var(--u)); margin-top: calc(36 * var(--u)); }
     .modal-cat-badge { top: calc(-64 * var(--u)); width: calc(128 * var(--u)); height: calc(128 * var(--u)); border-width: calc(2 * var(--u)); }
-    .dialog-header-area { min-height: calc(92 * var(--u)); margin-bottom: calc(8 * var(--u)); }
-    .flag-emblem { left: calc(-14 * var(--u)); top: calc(-18 * var(--u)); width: calc(114 * var(--u)); height: calc(114 * var(--u)); }
-    .dialog-card h2 { font-size: calc(26 * var(--u)); padding: 0 calc(112 * var(--u)); }
-    .dialog-divider { margin-left: calc(96 * var(--u)); margin-top: calc(-16 * var(--u)); margin-bottom: calc(28 * var(--u)); }
+    .dialog-header-area { min-height: calc(96 * var(--u)); margin-bottom: calc(8 * var(--u)); }
+    .flag-emblem { left: calc(10 * var(--u)); top: calc(4 * var(--u)); width: calc(112 * var(--u)); height: calc(112 * var(--u)); }
+    .dialog-card h2 { font-size: calc(26 * var(--u)); padding: 0 calc(130 * var(--u)); }
+    .dialog-divider { margin-left: calc(114 * var(--u)); margin-top: calc(-12 * var(--u)); margin-bottom: calc(30 * var(--u)); }
     .dialog-card p { font-size: calc(16 * var(--u)); line-height: 1.65; margin-bottom: calc(28 * var(--u)); }
 
     .biblio-card { padding: calc(28 * var(--u)) calc(40 * var(--u)); }
@@ -1269,7 +1269,7 @@
           <img src="Resources/PastedVector-52.svg" alt="Category Icon">
         </div>
 
-        <!-- Header Area: Large Flag left + Centered Category Title -->
+        <!-- Header Area: Round Flag left + Centered Category Title -->
         <div class="dialog-header-area">
           <div id="modal-flag-emblem" class="flag-emblem">
             <img src="Resources/PastedVector-51.svg" alt="USA Flag">
